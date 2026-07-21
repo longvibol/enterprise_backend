@@ -1,0 +1,9 @@
+id,code,name,description,role_type,scope_type,system_role,active
+11179c77-1c84-541c-b39a-e63671ae2b54,SYSTEM_ADMIN,System Administrator,Full access to the entire platform,SYSTEM_ADMIN,GLOBAL,true,true
+26225843-7f70-5fe7-ae28-801e6c78dcad,PLATFORM_STAFF,Platform Staff,Operates and moderates the platform,PLATFORM_STAFF,GLOBAL,true,true
+7989c105-39ff-5598-9d9b-da3a53e15712,RESTAURANT_OWNER,Restaurant Owner,Owns and manages restaurant businesses,RESTAURANT_OWNER,ORGANIZATION,true,true
+bbef7a54-5112-5855-b8bb-2b5b16373b85,RESTAURANT_MANAGER,Restaurant Manager,Manages one restaurant or branch,RESTAURANT_MANAGER,RESTAURANT,true,true
+d01ab2da-c355-568d-a00b-2fbab1ade3df,KTV_OWNER,KTV Owner,Owns and manages KTV businesses,KTV_OWNER,ORGANIZATION,true,true
+df473612-fa8d-5ed0-a777-7d683233c9ae,KTV_MANAGER,KTV Manager,Manages one KTV or branch,KTV_MANAGER,KTV,true,true
+d1498384-f607-510a-9f79-42c2dc6c07df,BUSINESS_STAFF,Business Staff,Handles daily restaurant or KTV operations,BUSINESS_STAFF,BRANCH,true,true
+b4a9fdf8-ab91-5788-9632-ed8efc007dae,CUSTOMER,Customer,Books restaurants or KTV services,CUSTOMER,GLOBAL,true,true

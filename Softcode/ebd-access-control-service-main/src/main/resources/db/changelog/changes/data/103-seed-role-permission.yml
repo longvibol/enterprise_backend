@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: 003-seed-role-permission
+      author: ingpiseth
+      changes:
+        - loadData:
+            file: ../../data/role-permissions.csv
+            relativeToChangelogFile: true
+            tableName: role_permission
+            separator: ","
+            quotchar: '"'

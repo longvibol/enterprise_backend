@@ -1,0 +1,28 @@
+id,code,name,description,module,active
+e4002744-9bc5-5884-894d-105220625fcf,USER_VIEW,View users,View user information,USER,true
+bac7389b-0062-515e-abdd-0bb3bb30d301,USER_MANAGE,Manage users,Create and update platform users,USER,true
+887db088-e322-56d9-8a07-b0e06e0ec5f2,ROLE_VIEW,View roles,View roles and their permissions,ACCESS_CONTROL,true
+05866fda-2c2c-566a-8ccb-b87f48098e64,ROLE_MANAGE,Manage roles,"Create, update, and deactivate roles",ACCESS_CONTROL,true
+ade430c3-27c3-5de9-9c79-20ab1f341554,PERMISSION_VIEW,View permissions,View available permissions,ACCESS_CONTROL,true
+26866376-dff9-599b-8143-c01e1762d269,PERMISSION_MANAGE,Manage permissions,"Create, update, and deactivate permissions",ACCESS_CONTROL,true
+0852c7b7-16e6-5b5b-a72c-5fef1224a7dd,USER_ROLE_ASSIGN,Assign user roles,Assign and revoke roles for users,ACCESS_CONTROL,true
+9ab39e65-bf25-5af6-a96d-76b7de106af5,RESTAURANT_VIEW,View restaurants,View restaurant information,RESTAURANT,true
+a4ba7983-18fc-5a67-8594-6a7237b72ce5,RESTAURANT_CREATE,Create restaurant,Create a restaurant,RESTAURANT,true
+beca2b15-d07e-5af5-8228-377948eecd0b,RESTAURANT_UPDATE,Update restaurant,Update restaurant information,RESTAURANT,true
+421add49-da4c-534d-8a6b-510c0b45f24b,RESTAURANT_DELETE,Delete restaurant,Delete a restaurant,RESTAURANT,true
+bbc2d88d-b554-56ab-9852-2284c4414656,RESTAURANT_APPROVE,Approve restaurant,Approve or reject a restaurant,RESTAURANT,true
+ee9efe82-80b5-57b6-9bfa-35b4ea333b66,KTV_VIEW,View KTVs,View KTV information,KTV,true
+3d91f804-3d32-5f44-ac1e-465b22634223,KTV_CREATE,Create KTV,Create a KTV business,KTV,true
+9130d6d4-0023-5ccd-a58a-134e20886c9c,KTV_UPDATE,Update KTV,Update KTV information,KTV,true
+b33123fb-6bb9-5d9c-8697-0c426c2e292f,KTV_DELETE,Delete KTV,Delete a KTV business,KTV,true
+7a64b118-bbf0-5047-9ca2-2c73bdca80b9,KTV_APPROVE,Approve KTV,Approve or reject a KTV business,KTV,true
+ab79ca4c-7d14-5d31-aaf2-54234427f219,MENU_VIEW,View menus,View restaurant menus and KTV service packages,MENU,true
+bca11862-dd70-567e-b8a6-cf367925b30d,MENU_MANAGE,Manage menus,Create and update menus and service packages,MENU,true
+5900df17-8a9d-5d80-af1a-7a2fd6885d99,BOOKING_VIEW,View bookings,View restaurant and KTV bookings,BOOKING,true
+049e4f55-1996-5876-92ea-91f01033359f,BOOKING_MANAGE,Manage bookings,Create and update restaurant and KTV bookings,BOOKING,true
+504cf64a-d799-5670-8593-8c26683c9a7d,SUBSCRIPTION_VIEW,View subscriptions,View business subscriptions,SUBSCRIPTION,true
+89080654-6868-588b-b2a3-26c70ced6ec4,SUBSCRIPTION_MANAGE,Manage subscriptions,Create and update subscriptions,SUBSCRIPTION,true
+621f3e7d-9673-58cd-88d4-ace2dbac9a3a,PAYMENT_VIEW,View payments,View payment information,PAYMENT,true
+45a1e659-e10c-50b8-bb42-32e5760c717a,PAYMENT_MANAGE,Manage payments,"Create, confirm, and refund payments",PAYMENT,true
+e4bbbdf7-97a9-5e72-846d-c60d92f0eb92,REPORT_VIEW,View reports,View platform and business reports,REPORT,true
+b9ad1261-0410-5ad3-8b1f-fedccc82005d,SYSTEM_CONFIGURE,Configure system,Manage platform configuration,SYSTEM,true
