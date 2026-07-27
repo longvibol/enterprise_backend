@@ -37,6 +37,13 @@
     </dependencyManagement>
 
     <dependencies>
+    
+    	<!-- Own dependancy -->
+    	<dependency>
+    		<groupId>com.pisethjavaschool.platform</groupId>
+    		<artifactId>platform-common</artifactId>
+    		<version>1.0.0</version>
+    	</dependency>
 
         <!-- Spring Boot -->
         <dependency>

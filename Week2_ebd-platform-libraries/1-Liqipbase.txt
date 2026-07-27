@@ -1,0 +1,6 @@
+1- Docker command to deleted the data 
+
+>> docker compose -f docker-compose.yml down -v 
+
+
+
