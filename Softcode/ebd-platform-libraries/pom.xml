@@ -14,7 +14,8 @@
 
     <modules>
         <module>platform-common</module>
-
+        <module>platform-exception</module>
+        <module>platform-openapi</module>
     </modules>
 
     <properties>

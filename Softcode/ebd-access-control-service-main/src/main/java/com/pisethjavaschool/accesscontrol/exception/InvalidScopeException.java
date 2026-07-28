@@ -1,6 +1,6 @@
 package com.pisethjavaschool.accesscontrol.exception;
 
-import com.pisethjavaschool.accesscontrol.common.exception.BadRequestException;
+import com.pisethjavaschool.platform.exception.BadRequestException;
 
 public class InvalidScopeException extends BadRequestException {
     public InvalidScopeException(String message) {
