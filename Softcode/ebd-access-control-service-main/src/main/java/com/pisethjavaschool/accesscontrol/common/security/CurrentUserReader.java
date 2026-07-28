@@ -5,7 +5,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Component;
 
 import com.pisethjavaschool.accesscontrol.common.audit.CurrentAuditorProvider;
-import com.pisethjavaschool.accesscontrol.common.exception.UnauthorizedException;
+import com.pisethjavaschool.platform.exception.UnauthorizedException;
 
 import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Mono;

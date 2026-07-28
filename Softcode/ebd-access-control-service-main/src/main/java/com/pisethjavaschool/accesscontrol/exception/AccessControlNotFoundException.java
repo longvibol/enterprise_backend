@@ -1,6 +1,6 @@
 package com.pisethjavaschool.accesscontrol.exception;
 
-import com.pisethjavaschool.accesscontrol.common.exception.NotFoundException;
+import com.pisethjavaschool.platform.exception.NotFoundException;
 
 public class AccessControlNotFoundException extends NotFoundException {
     public AccessControlNotFoundException(String message) {
