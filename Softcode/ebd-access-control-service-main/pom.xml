@@ -22,6 +22,7 @@
         <spring-cloud.version>2025.1.0</spring-cloud.version>
         <mapstruct.version>1.6.3</mapstruct.version>
         <lombok.version>1.18.42</lombok.version>
+        <platform-libraries.version>1.0.0-SNAPSHOT</platform-libraries.version>
     </properties>
 
     <dependencyManagement>
@@ -42,19 +43,19 @@
     	<dependency>
     		<groupId>com.pisethjavaschool.platform</groupId>
     		<artifactId>platform-common</artifactId>
-    		<version>1.0.0</version>
+    		<version>${platform-libraries.version}</version>
     	</dependency>
     	
     	<dependency>
     		<groupId>com.pisethjavaschool.platform</groupId>
     		<artifactId>platform-exception</artifactId>
-    		<version>1.0.0</version>
+    		<version>${platform-libraries.version}</version>
     	</dependency>
     	
     	<dependency>
     		<groupId>com.pisethjavaschool.platform</groupId>
     		<artifactId>platform-openapi</artifactId>
-    		<version>1.0.0</version>
+    		<version>${platform-libraries.version}</version>
     	</dependency>    	
     	<!-- End of dependancy -->
 

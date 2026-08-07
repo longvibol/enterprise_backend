@@ -1,0 +1,23 @@
+1- R2DB - Class 
+
+- R2dbcAuditConfig ដើម្បីអោយដឹងថា User ណាធ្វើអី
+- ReactiveTransactionConfig ពេលដែល User have interactin with other table and have problem it will role back 
+
+
+2- security 
+- CurrentUserReader វាធ្វើការចាប់ User ដែលកំពុង login 
+- getCurrentAuditorId : working with uuid
+
+3-common.web 
+
+- InstantQueryParamConverter : convert from Strin gto instanct យើងប្រើវានៅពេលដែលយើង Filter 
+ឬធ្វើការ Search from data
+
+Example: this one user create from this month : url //http://xxxx?createdAt=2026-08-02 ចឹងវា convert string នឹងមកកាន់ 
+
+Data របស់យើងដែលវាប្រើប្រាស់ជា Instant 
+
+
+
+
+

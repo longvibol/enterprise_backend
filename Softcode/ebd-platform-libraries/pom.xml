@@ -6,7 +6,7 @@
 
     <groupId>com.pisethjavaschool.platform</groupId>
     <artifactId>platform-libraries</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>platform-libraries</name>
@@ -16,6 +16,13 @@
         <module>platform-common</module>
         <module>platform-exception</module>
         <module>platform-openapi</module>
+
+        <module>platform-r2dbc</module>
+        <module>platform-security</module>
+        <module>platform-validation</module>
+        <module>platform-web</module>
+        <module>platform-logging</module>
+
     </modules>
 
     <properties>

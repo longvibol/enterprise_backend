@@ -1,0 +1,29 @@
+services:
+  redis:
+    image: redis:7.4-alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - room-platform-dev-net
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - roomplatform_redis_data:/data
+    restart: unless-stopped
+
+  redis-ui:
+    image: redis/redisinsight:latest
+    container_name: redis-ui
+    ports:
+      - "5540:5540"
+    networks:
+      - room-platform-dev-net
+    depends_on:
+      - redis
+
+volumes:
+  roomplatform_redis_data:
+
+networks:
+  room-platform-dev-net:
+    external: true

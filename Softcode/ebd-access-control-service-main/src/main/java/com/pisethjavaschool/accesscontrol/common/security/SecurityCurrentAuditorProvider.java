@@ -6,7 +6,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import com.pisethjavaschool.accesscontrol.common.audit.CurrentAuditorProvider;
+import com.pisethjavaschool.platform.common.audit.CurrentAuditorProvider;
 
 import reactor.core.publisher.Mono;
 

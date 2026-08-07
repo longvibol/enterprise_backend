@@ -8,7 +8,7 @@
     <parent>
         <groupId>com.pisethjavaschool.platform</groupId>
         <artifactId>platform-libraries</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>platform-openapi</artifactId>

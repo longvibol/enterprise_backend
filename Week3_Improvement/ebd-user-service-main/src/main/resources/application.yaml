@@ -1,0 +1,71 @@
+spring:
+  application:
+    name: user-service
+
+  r2dbc:
+    url: r2dbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5663}/${DB_NAME:user_db}
+    username: ${DB_USERNAME:user_service}
+    password: ${DB_PASSWORD:UserService@2026}
+
+  liquibase:
+    enabled: true
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5663}/${DB_NAME:user_db}
+    user: ${DB_USERNAME:user_service}
+    password: ${DB_PASSWORD:UserService@2026}
+    change-log: classpath:db/changelog/db.changelog-master.yml
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:9292/realms/restaurant-ktv-platform}
+          jwk-set-uri: ${KEYCLOAK_JWK_SET_URI:http://localhost:9292/realms/restaurant-ktv-platform/protocol/openid-connect/certs}
+
+#  cloud:
+#    consul:
+#      host: ${CONSUL_HOST:localhost}
+#      port: ${CONSUL_PORT:8500}
+#      discovery:
+#        enabled: ${CONSUL_DISCOVERY_ENABLED:false}
+#        service-name: ${spring.application.name}
+#        prefer-ip-address: true
+#        health-check-path: /actuator/health
+
+server:
+  port: ${SERVER_PORT:8089}
+
+keycloak:
+  base-url: ${KEYCLOAK_BASE_URL:http://localhost:9292}
+  realm: ${KEYCLOAK_REALM:restaurant-ktv-platform}
+  admin:
+    client-id: ${KEYCLOAK_ADMIN_CLIENT_ID:user-service}
+    client-secret: ${KEYCLOAK_ADMIN_CLIENT_SECRET:Ea0sBEuJkJSAt34JIIOYrXffbQEbSRSB}
+  login:
+    client-id: ${KEYCLOAK_LOGIN_CLIENT_ID:user-login}
+    client-secret: ${KEYCLOAK_LOGIN_CLIENT_SECRET:xUGbftWyuhAmlNciURkaWVO13sAl8GfT}
+
+#platform:
+#  clients:
+#    access-control:
+#      base-url: ${ACCESS_CONTROL_SERVICE_URL:http://localhost:8091}
+#      root-path: /api/v1/access-control
+#
+#    business-owner:
+#      base-url: ${BUSINESS_OWNER_SERVICE_URL:http://localhost:8092}
+#      root-path: /api/v1/business-owners
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+logging:
+  level:
+    com.pisethjavaschool.userservice: INFO
