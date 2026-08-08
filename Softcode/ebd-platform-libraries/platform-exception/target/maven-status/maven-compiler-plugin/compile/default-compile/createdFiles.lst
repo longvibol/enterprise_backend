@@ -1,7 +1,7 @@
-com\pisethjavaschool\platform\exception\BusinessException.class
-com\pisethjavaschool\platform\exception\UnauthorizedException.class
-com\pisethjavaschool\platform\exception\NotFoundException.class
-com\pisethjavaschool\platform\exception\GlobalExceptionHandler.class
-com\pisethjavaschool\platform\exception\ForbiddenException.class
-com\pisethjavaschool\platform\exception\ConflictException.class
-com\pisethjavaschool\platform\exception\BadRequestException.class
+com/pisethjavaschool/platform/exception/BadRequestException.class
+com/pisethjavaschool/platform/exception/BusinessException.class
+com/pisethjavaschool/platform/exception/ForbiddenException.class
+com/pisethjavaschool/platform/exception/GlobalExceptionHandler.class
+com/pisethjavaschool/platform/exception/NotFoundException.class
+com/pisethjavaschool/platform/exception/UnauthorizedException.class
+com/pisethjavaschool/platform/exception/ConflictException.class

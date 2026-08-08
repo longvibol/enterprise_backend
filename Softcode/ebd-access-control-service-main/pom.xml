@@ -56,7 +56,28 @@
     		<groupId>com.pisethjavaschool.platform</groupId>
     		<artifactId>platform-openapi</artifactId>
     		<version>${platform-libraries.version}</version>
-    	</dependency>    	
+    	</dependency>    
+    	
+    	<dependency>
+    		<groupId>com.pisethjavaschool.platform</groupId>
+    		<artifactId>platform-r2dbc</artifactId>
+    		<version>${platform-libraries.version}</version>
+    	</dependency>    
+    	
+    	<dependency>
+    		<groupId>com.pisethjavaschool.platform</groupId>
+    		<artifactId>platform-security</artifactId>
+    		<version>${platform-libraries.version}</version>
+    	</dependency>   
+    	 
+    	
+    	<dependency>
+    		<groupId>com.pisethjavaschool.platform</groupId>
+    		<artifactId>platform-web</artifactId>
+    		<version>${platform-libraries.version}</version>
+    	</dependency>    
+    	
+    		
     	<!-- End of dependancy -->
 
         <!-- Spring Boot -->
