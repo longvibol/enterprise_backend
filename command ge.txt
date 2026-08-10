@@ -1,0 +1,3 @@
+1- run both Docker Compose files together
+
+docker compose -f docker-compose.yml -f keycloak.local.yml up -d
