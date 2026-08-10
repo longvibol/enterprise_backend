@@ -1,0 +1,11 @@
+1- Create library 
+
+>> mvn clean install
+
+2- we will build the centralize liabary in the sonalink តាមក្រុមហ៊ុន មួយៗគាត់មាន library or jar file 
+they store in the file : It will create and but if it is the same we will overight it 
+
+
+
+
+

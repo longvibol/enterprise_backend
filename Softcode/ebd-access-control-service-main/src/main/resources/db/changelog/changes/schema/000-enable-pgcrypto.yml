@@ -1,8 +1,0 @@
-databaseChangeLog:
-  - changeSet:
-      id: 000-enable-pgcrypto
-      author: ingpiseth
-
-      changes:
-        - sql:
-            sql: CREATE EXTENSION IF NOT EXISTS pgcrypto;

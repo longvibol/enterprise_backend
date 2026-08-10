@@ -1,0 +1,14 @@
+{
+  "clientId": "user-login",
+  "name": "user-login",
+  "enabled": true,
+  "protocol": "openid-connect",
+  "clientAuthenticatorType": "client-secret",
+  "publicClient": false,
+  "bearerOnly": false,
+  "standardFlowEnabled": false,
+  "implicitFlowEnabled": false,
+  "directAccessGrantsEnabled": true,
+  "serviceAccountsEnabled": false,
+  "secret": "xUGbftWyuhAmlNciURkaWVO13sAl8GfT"
+}

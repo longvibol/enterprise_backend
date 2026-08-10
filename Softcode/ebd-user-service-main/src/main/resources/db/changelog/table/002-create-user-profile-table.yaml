@@ -1,0 +1,63 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-create-user-profile-table
+      author: pisethjavaschool
+      changes:
+        - createTable:
+            tableName: user_profile
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  defaultValueComputed: gen_random_uuid()
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: user_account_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: first_name
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: last_name
+                  type: varchar(100)
+              - column:
+                  name: gender
+                  type: varchar(20)
+              - column:
+                  name: date_of_birth
+                  type: date
+              - column:
+                  name: photo_media_id
+                  type: uuid
+              - column:
+                  name: created_at
+                  type: timestamp with time zone
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_by
+                  type: uuid
+              - column:
+                  name: updated_at
+                  type: timestamp with time zone
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_by
+                  type: uuid
+        - addForeignKeyConstraint:
+            baseTableName: user_profile
+            baseColumnNames: user_account_id
+            referencedTableName: user_account
+            referencedColumnNames: id
+            constraintName: fk_user_profile_user_account
+            onDelete: CASCADE

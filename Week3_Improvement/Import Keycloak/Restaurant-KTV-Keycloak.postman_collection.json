@@ -1,0 +1,264 @@
+{
+  "info": {
+    "_postman_id": "8e988b27-57ef-4d7c-807b-1b52ff69de76",
+    "name": "Restaurant KTV - Keycloak Test",
+    "description": "Test Keycloak realm, user-service service account, Admin REST API, and user-login Direct Access Grant before connecting Spring Boot.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:9292"
+    },
+    {
+      "key": "realm",
+      "value": "restaurant-ktv-platform"
+    },
+    {
+      "key": "serviceClientId",
+      "value": "user-service"
+    },
+    {
+      "key": "serviceClientSecret",
+      "value": "Ea0sBEuJkJSAt34JIIOYrXffbQEbSRSB"
+    },
+    {
+      "key": "loginClientId",
+      "value": "user-login"
+    },
+    {
+      "key": "loginClientSecret",
+      "value": "xUGbftWyuhAmlNciURkaWVO13sAl8GfT"
+    },
+    {
+      "key": "username",
+      "value": "testuser"
+    },
+    {
+      "key": "password",
+      "value": "123456"
+    },
+    {
+      "key": "serviceAccessToken",
+      "value": ""
+    },
+    {
+      "key": "userAccessToken",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "1 - Get user-service token",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/x-www-form-urlencoded"
+          }
+        ],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "client_id",
+              "value": "{{serviceClientId}}",
+              "type": "text"
+            },
+            {
+              "key": "client_secret",
+              "value": "{{serviceClientSecret}}",
+              "type": "text"
+            },
+            {
+              "key": "grant_type",
+              "value": "client_credentials",
+              "type": "text"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{baseUrl}}/realms/{{realm}}/protocol/openid-connect/token",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "realms",
+            "{{realm}}",
+            "protocol",
+            "openid-connect",
+            "token"
+          ]
+        },
+        "description": "Gets a service-account access token for user-service."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status is 200', function () { pm.response.to.have.status(200); });",
+              "const data = pm.response.json();",
+              "if (data.access_token) {",
+              "  pm.collectionVariables.set('serviceAccessToken', data.access_token);",
+              "}"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "2 - Admin API - List users",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{serviceAccessToken}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/admin/realms/{{realm}}/users",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "admin",
+            "realms",
+            "{{realm}}",
+            "users"
+          ]
+        },
+        "description": "Verifies that user-service has permission to access the Keycloak Admin REST API."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Admin API returns 200', function () { pm.response.to.have.status(200); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "3 - Login test user",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/x-www-form-urlencoded"
+          }
+        ],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "client_id",
+              "value": "{{loginClientId}}",
+              "type": "text"
+            },
+            {
+              "key": "client_secret",
+              "value": "{{loginClientSecret}}",
+              "type": "text"
+            },
+            {
+              "key": "username",
+              "value": "{{username}}",
+              "type": "text"
+            },
+            {
+              "key": "password",
+              "value": "{{password}}",
+              "type": "text"
+            },
+            {
+              "key": "grant_type",
+              "value": "password",
+              "type": "text"
+            },
+            {
+              "key": "scope",
+              "value": "openid",
+              "type": "text"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{baseUrl}}/realms/{{realm}}/protocol/openid-connect/token",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "realms",
+            "{{realm}}",
+            "protocol",
+            "openid-connect",
+            "token"
+          ]
+        },
+        "description": "Tests Direct Access Grants on user-login."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status is 200', function () { pm.response.to.have.status(200); });",
+              "const data = pm.response.json();",
+              "if (data.access_token) {",
+              "  pm.collectionVariables.set('userAccessToken', data.access_token);",
+              "}"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "4 - UserInfo",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{userAccessToken}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/realms/{{realm}}/protocol/openid-connect/userinfo",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "realms",
+            "{{realm}}",
+            "protocol",
+            "openid-connect",
+            "userinfo"
+          ]
+        },
+        "description": "Checks that the user access token is accepted by Keycloak."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('UserInfo returns 200', function () { pm.response.to.have.status(200); });"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
