@@ -7,7 +7,9 @@ import com.pisethjavaschool.platform.common.pagination.PageResponse;
 import reactor.core.publisher.Mono;
 
 public interface UserQueryService {
-    Mono<UserResponse> findById(UUID id);
-    Mono<UserIdentityResponse> findIdentityByKeycloakUserId(UUID keycloakUserId);
-    Mono<PageResponse<UserResponse>> search(UserType userType, String keyword, int page, int size);
+	Mono<UserResponse> findById(UUID id);
+
+	Mono<UserIdentityResponse> findIdentityByKeycloakUserId(UUID keycloakUserId);
+
+	Mono<PageResponse<UserResponse>> search(UserType userType, String keyword, int page, int size);
 }

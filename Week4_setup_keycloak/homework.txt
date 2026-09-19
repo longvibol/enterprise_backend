@@ -1,0 +1,126 @@
+- validate special character in password 
+- add unit test to password validator 
+
+
+==> class: PasswordPolicy
+
+សម្រាប់ការធ្វើ Validation គឺយើងចឹងដឹងតែ single វាជាអីតែប៉ុណ្តោះ 
+
+Example:
+
+    private Mono<Void> validateUniqueUsername(String username) {
+        return accountRepository.existsByUsernameIgnoreCase(username)
+                .flatMap(exists -> {
+                    if (Boolean.TRUE.equals(exists)) {
+                        return Mono.error(new DuplicateUserException("User already exists."));
+                    }
+                    return Mono.empty();
+                });
+    }
+
+==> ចឹងយើងអាចចាំបាន for the validation the return is Void បើវាមាន error vir throw exception បើអត់មានអីទេ វាទៅធ្វើការ បន្ទាប់ 
+
+.then(createIdentity(request, username))​ = for keycloak store the data 
+
++ សម្រាប់ Keycload យើងអោយវាធ្វើការ store only : user name, password, email 
+
+ចឹងវាដូចជាស្ពាន់ ដែលសម្រាប់ធ្វើការ keycloakUserClient connection from our system to keycloak system 
+
+ចឹងយើងបង្កើតវាជា interface ដើម្បីធ្វើការ រាល់ពេលមានអីទាក់ទងយើងធ្វើការទាក់ទងតាម interface នឹង
+
+----------------------------------------------------------------
+
+public interface KeycloakUserClient {
+	Mono<String> createUser(String username, String email, String firstName, String lastName, String password,
+			boolean enabled);
+
+	Mono<Void> updateUser(String keycloakUserId, String email, String firstName, String lastName, boolean enabled);
+
+	Mono<Void> resetPassword(String keycloakUserId, String password);
+
+	Mono<Void> disableUser(String keycloakUserId);
+
+	Mono<KeycloakTokenResponse> login(String username, String password);
+
+	Mono<KeycloakTokenResponse> refreshToken(String refreshToken);
+}
+
+
+----------------------------------------------------
+
+
+==> when we create user to the keycload we use called the api from the keycload យើងអាចមើលនៅក្នុង keycload documentation 
+
+createUser:
+
+    @Override
+    public Mono<String> createUser(String username, String email, String firstName, String lastName, String password, boolean enabled) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("username", username);
+        body.put("email", email);
+        body.put("firstName", firstName);
+        body.put("lastName", lastName);
+        body.put("enabled", enabled);
+        body.put("credentials", List.of(Map.of("type", "password", "value", password, "temporary", false)));
+        return adminToken()
+                .flatMap(token -> client().post().uri(adminUsersUri()).headers(h -> h.setBearerAuth(token)).contentType(MediaType.APPLICATION_JSON).bodyValue(body).exchangeToMono(response -> {
+                    if (response.statusCode().is2xxSuccessful()) {
+                        URI location = response.headers().asHttpHeaders().getLocation();
+                        if (location == null) {
+                            return Mono.error(new KeycloakIntegrationException("Keycloak did not return user location."));
+                        }
+                        String path = location.getPath();
+                        return Mono.just(path.substring(path.lastIndexOf('/') + 1));
+                    }
+                    return response.bodyToMono(String.class).defaultIfEmpty("").flatMap(error -> Mono.error(new KeycloakIntegrationException("Create Keycloak user failed: " + error)));
+                }));
+    }
+
+----------------------------------------
+
+return passwordPolicy.validate(request.password())
+                .then(validateUniqueUsername(username))
+                .then(createIdentity(request, username))
+                .flatMap(account -> createProfile(account, request)
+
+យើងចំណាំ បើយើងអត់យកវាមកប្រើទេ យើង .then ប៉ុន្តែបើយើងចង់បានវា យកមកប្រើ យើង user .flatmap 
+
+- flatMap គឺយើងធ្វើការបំលែង ទៅជាអី​ មួយទៀត
+
+- ​createIdentity : យើងត្រូវយក Id from Keycload មកដាក់ចូលក្នុង database របស់យើង 
+
+private Mono<UserAccount> createIdentity(CreateUserRequest request, String username) {
+        return keycloakUserClient.createUser(username, request.email(), request.firstName(), request.lastName(), request.password(), true)
+                .flatMap(keycloakUserId -> {
+                    UserAccount account = mapper.toAccount(
+                            request,
+                            username,
+                            keycloakUserId,
+                            AccountStatus.ACTIVE,
+                            RegistrationStatus.COMPLETED
+                    );
+                    return accountRepository.save(account);
+                });
+    }
+
+បន្ទាប់មកបានយើងធ្វើការ បង្កើត User profile តាមក្រោយ
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

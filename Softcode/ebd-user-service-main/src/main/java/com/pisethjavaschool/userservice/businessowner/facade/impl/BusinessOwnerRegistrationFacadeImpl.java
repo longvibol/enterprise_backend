@@ -15,7 +15,7 @@ import reactor.core.publisher.Mono;
 @Service
 @RequiredArgsConstructor
 public class BusinessOwnerRegistrationFacadeImpl implements BusinessOwnerRegistrationFacade {
-    private final UserCommandService userCommandService;
+    private final UserCommandService userCommandService; // CQRS pattern
     private final BusinessOwnerRegistrationMapper mapper;
 
     @Override

@@ -1,0 +1,84 @@
+organizationId vs businessId
+
+- organizationId លេខសំគាល់ក្រុមហ៊ុន មេមួយ
+- businessId = អាជីវកម្មជាក់លាក់មួយ
+
+Organization
+│
+── KTV Phnom Penh
+── KTV Siem Reap
+
+
+-----------------------------------------------------
+
++ Why Facade here but Service in user ជាអ្នក call to user service to crate user 
+
+Service
+UserCommandService
+provides core domain/application capabilities:
+create user
+update user
+delete user
+activate user
+deactivate user
+reset password
+
+អោយតែលឺ façade គឺវា Manage to the use case one by one 
+
+- orchestration អ្នកនៅកណ្តាល វាជាអ្នកគ្របគ្រង លើអ្នកចូលរួមធ្វើការច្រើន
+
+
+-----------------------------------------
+
++platformstaff : who control the system 
+
+Moderator
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

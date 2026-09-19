@@ -1,0 +1,88 @@
+1- Keycloak command 
+
+>> docker compose -f keycloak.local.yml up -d
+
+2- Create keycloak
+
+
+keycloak:
+  base-url: ${KEYCLOAK_BASE_URL:http://localhost:9292}
+  realm: ${KEYCLOAK_REALM:restaurant-ktv-platform}
+  admin:
+    client-id: ${KEYCLOAK_ADMIN_CLIENT_ID:user-service}
+    client-secret: ${KEYCLOAK_ADMIN_CLIENT_SECRET:Ea0sBEuJkJSAt34JIIOYrXffbQEbSRSB}
+  login:
+    client-id: ${KEYCLOAK_LOGIN_CLIENT_ID:user-login}
+    client-secret: ${KEYCLOAK_LOGIN_CLIENT_SECRET:xUGbftWyuhAmlNciURkaWVO13sAl8GfT}
+
+
+-------------------------------------------------------------
+
+3- term key word
+
+- in consistence data : example :  when create in the user in the database but in the keycloak not have it 
+
+- clear the data in the docker compose 
+
+>> docker compose -f docker-compose.yml down -v (remove the data)
+
+then we can start it back :
+
+>> docker compose -f docker-compose.yml up -d
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

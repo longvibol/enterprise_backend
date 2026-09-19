@@ -1,0 +1,263 @@
+1- User : the core domain : it answer the question : Who is this person in our platform? តើអ្នកនឹងជាពីណាគេ 
+
+ចឹងវាធ្វើការកត់ត្រា User ថាវាជាអ្នកណា.
+
+- យើងមាន entity 2 សំខាន់ : UserAccount and UserProfile.
+
+1.1 UserAccount : ពត៌មានរបស់ account របស់យើង
+
+    private UUID id;
+    private String keycloakUserId;
+    private UserType userType;
+    private String countryCode;
+    private String phoneNumber;
+    private String email;
+    private String username;
+    private AccountStatus accountStatus;
+    private RegistrationStatus registrationStatus;
+
+
+- id : is the id in the system 
+- keycloakUserId: id user from the keyloack (for intergrate IAM) 
+
+
+1.2 UserProfile តំណាងអោយពត៌មានផ្ទាល់ខ្លួន របស់ user 
+
+Who is the person behind this account? តើអ្នកណាគេជាម្ចាស់ account នឹង​
+
+==> UserAccount = identity/account state​ គាត់អាច access មក system យើងបានអត់
+
+==> UserProfile = person's profile information ពត៌មានផ្ទាល់ របស់ user
+
+3- UserType : ប្រភេទ​ User (5 type in the system) 
+
+- CUSTOMER​​: អ្នកប្រើប្រាស់ជាលក្ខណៈអតិថិជន ហាងមួយនឹង ឬអាជីវកម្មហាងនឹង
+
+- BUSINESS_owner: ម្ចាស់ ធ្វើ Business ម្ចាស់ស្នាបណ្ណនឹង
+
+- BUSINESS_STAFF: 
+
+PLATFORM_STAFF
+SYSTEM_ADMIN
+
+4-authentication ជាកន្លែងកណ្តាល ដែលយើងធ្វើការបង្កើតអោយវា ហៅទៅនឹង Keycloak ដើម្បីធ្វើការបង្កើត និង Update Authentication យើង
+
+The flow is:
+POST /auth/login
+│
+AuthController
+│
+AuthService
+│
+── UserAccountRepository
+│
+── UserQueryService
+│
+── KeycloakUserClient
+│
+Keycloak
+
+--------------
+
++ ពេលយើង ធ្វើការ Login it will return JWT មកហើយវាមាន refresh token ផងដែល តែពេលដែល login expire ដើម្បីកុំអោយ login ច្រើនដង់យើងធ្វើការ
+refresh token នឹង
+
++ refresh-token : យើងមិនបាច់ ធ្វើការ Login 
+
+public interface KeycloakUserClient : សុទ្ធដែល Operation to keycloak 
+
+
+Our architecture instead says:
+
+Application -> KeycloakUserClient -> Keycloak
+
+- application ហៅទៅកាន់ interface KeycloakUserClient (ជាស្ពាន់ចំលង) ចឹងវាចេះទៅទាក់ទង ទៅ Keycloak ហើយ
+
+- KeycloakUserClient not on the details of Keycloak's REST API វាមិនពឹងផ្អែកលើ Rest API របស់ Keycloak នោះទេ ព្រោះយើងបានធ្វើវានៅក្នុង
+
+KeycloakUserClient រួចរាល់ហើយ (Dependency Inversion)​
+
+---------------------------------------------------------------------------
+
+businessowner : គឺមិនមាន service នោះទេ
+
+platformstaff : also don't have service 
+
+==> ដោយសារតែវា userservice.user ដូចគ្នាគឺវាបង្កើត user ចឹងយើងធ្វើការប្រើប្រាស់តែមួយទេ
+
+ចឹងយើងប្រើប្រាស់
+
+public interface UserCommandService {
+    Mono<UserResponse> create(CreateUserRequest request);
+    Mono<UserResponse> update(UUID id, UpdateUserRequest request);
+    Mono<Void> delete(UUID id);
+    Mono<UserResponse> activate(UUID id);
+    Mono<UserResponse> deactivate(UUID id);
+    Mono<Void> resetPassword(UUID id, String newPassword);
+}
+
+
+==> service នឹងវានៅក្នុង façade 
+
+UserCommandService: យើងប្រើប្រាស់ service នេះជាមួយគ្នាដោយគ្រាន់តែយើងធ្វើការ mapper to each user for example: user staff, user owner or normal user
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -32,74 +32,53 @@ import reactor.core.publisher.Mono;
 @RequestMapping("/api/v1/users")
 public class UserController {
 
-    private final UserCommandService commandService;
-    private final UserQueryService queryService;
+	private final UserCommandService commandService;
+	private final UserQueryService queryService;
 
-    @PostMapping
-    public Mono<UserResponse> create(
-            @Valid @RequestBody CreateUserRequest request
-    ) {
-        return commandService.create(request);
-    }
+	@PostMapping
+	public Mono<UserResponse> create(@Valid @RequestBody CreateUserRequest request) {
+		return commandService.create(request);
+	}
 
-    @GetMapping("/{id}")
-    public Mono<UserResponse> findById(
-            @PathVariable UUID id
-    ) {
-        return queryService.findById(id);
-    }
-    
-    @GetMapping("/internal/by-keycloak-id/{keycloakUserId}")
-    public Mono<UserIdentityResponse> findIdentityByKeycloakUserId(
-            @PathVariable UUID keycloakUserId
-    ) {
-        return queryService.findIdentityByKeycloakUserId(keycloakUserId);
-    }
+	@GetMapping("/{id}")
+	public Mono<UserResponse> findById(@PathVariable UUID id) {
+		return queryService.findById(id);
+	}
 
-    @GetMapping
-    public Mono<PageResponse<UserResponse>> search(
-            @RequestParam(required = false) UserType userType,
-            @RequestParam(required = false) String keyword,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "20") int size
-    ) {
-        return queryService.search(userType, keyword, page, size);
-    }
+	@GetMapping("/internal/by-keycloak-id/{keycloakUserId}")
+	public Mono<UserIdentityResponse> findIdentityByKeycloakUserId(@PathVariable UUID keycloakUserId) {
+		return queryService.findIdentityByKeycloakUserId(keycloakUserId);
+	}
 
-    @PutMapping("/{id}")
-    public Mono<UserResponse> update(
-            @PathVariable UUID id,
-            @Valid @RequestBody UpdateUserRequest request
-    ) {
-        return commandService.update(id, request);
-    }
+	@GetMapping
+	public Mono<PageResponse<UserResponse>> search(@RequestParam(required = false) UserType userType,
+			@RequestParam(required = false) String keyword, @RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "20") int size) {
+		return queryService.search(userType, keyword, page, size);
+	}
 
-    @DeleteMapping("/{id}")
-    public Mono<Void> delete(
-            @PathVariable UUID id
-    ) {
-        return commandService.delete(id);
-    }
+	@PutMapping("/{id}")
+	public Mono<UserResponse> update(@PathVariable UUID id, @Valid @RequestBody UpdateUserRequest request) {
+		return commandService.update(id, request);
+	}
 
-    @PatchMapping("/{id}/activate")
-    public Mono<UserResponse> activate(
-            @PathVariable UUID id
-    ) {
-        return commandService.activate(id);
-    }
+	@DeleteMapping("/{id}")
+	public Mono<Void> delete(@PathVariable UUID id) {
+		return commandService.delete(id);
+	}
 
-    @PatchMapping("/{id}/deactivate")
-    public Mono<UserResponse> deactivate(
-            @PathVariable UUID id
-    ) {
-        return commandService.deactivate(id);
-    }
+	@PatchMapping("/{id}/activate")
+	public Mono<UserResponse> activate(@PathVariable UUID id) {
+		return commandService.activate(id);
+	}
 
-    @PatchMapping("/{id}/reset-password")
-    public Mono<Void> resetPassword(
-            @PathVariable UUID id,
-            @Valid @RequestBody ResetPasswordRequest request
-    ) {
-        return commandService.resetPassword(id, request.newPassword());
-    }
+	@PatchMapping("/{id}/deactivate")
+	public Mono<UserResponse> deactivate(@PathVariable UUID id) {
+		return commandService.deactivate(id);
+	}
+
+	@PatchMapping("/{id}/reset-password")
+	public Mono<Void> resetPassword(@PathVariable UUID id, @Valid @RequestBody ResetPasswordRequest request) {
+		return commandService.resetPassword(id, request.newPassword());
+	}
 }

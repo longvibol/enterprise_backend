@@ -1,0 +1,4 @@
+- We use only one Postgress and create many database 
+
+- "property-owner-service" ប្រើប្រាស់ដើម្បី Trust owner service 
+
