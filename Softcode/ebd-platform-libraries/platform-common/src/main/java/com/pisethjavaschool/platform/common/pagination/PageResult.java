@@ -1,6 +1,0 @@
-package com.pisethjavaschool.platform.common.pagination;
-
-import java.util.List;
-
-public record PageResult<T>(List<T> items, long totalElements) {
-}
