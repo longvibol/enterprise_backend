@@ -1,0 +1,52 @@
+databaseChangeLog:
+  - changeSet:
+      id: 004-create-owner-verification-history
+      author: pisethjavaschool
+      changes:
+        - createTable:
+            tableName: owner_verification_history
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  defaultValueComputed: gen_random_uuid()
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: owner_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: old_status
+                  type: VARCHAR(50)
+              - column:
+                  name: new_status
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: reason
+                  type: VARCHAR(1000)
+              - column:
+                  name: reviewed_by
+                  type: UUID
+              - column:
+                  name: reviewed_at
+                  type: TIMESTAMP WITH TIME ZONE
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: owner_verification_history
+            baseColumnNames: owner_id
+            referencedTableName: property_owner
+            referencedColumnNames: id
+            constraintName: fk_owner_verification_history_owner
+        - createIndex:
+            tableName: owner_verification_history
+            indexName: idx_owner_verification_history_owner_id
+            columns:
+              - column:
+                  name: owner_id

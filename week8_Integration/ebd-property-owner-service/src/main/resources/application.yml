@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: property-owner-service
+  r2dbc:
+    url: r2dbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5436}/${DB_NAME:platform_property_owner}
+    username: ${DB_USERNAME:restaurant-ktv-platform}
+    password: ${DB_PASSWORD:Pisethjavaschool#2026}
+  liquibase:
+    enabled: true
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5436}/${DB_NAME:platform_property_owner}
+    user: ${DB_USERNAME:restaurant-ktv-platform}
+    password: ${DB_PASSWORD:Pisethjavaschool#2026}
+    change-log: classpath:db/changelog/db.changelog-master.yml
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:9292/realms/restaurant-ktv-platform}
+          jwk-set-uri: ${KEYCLOAK_JWK_SET_URI:http://localhost:9292/realms/restaurant-ktv-platform/protocol/openid-connect/certs}
+
+server:
+  port: ${SERVER_PORT:8069}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+
+logging:
+  level:
+    com.pisethjavaschool.propertyowner: INFO
+
+platform:
+  clients:
+    user:
+      base-url: ${USER_SERVICE_URL:http://localhost:8089}
+      root-path: /api/v1/users		

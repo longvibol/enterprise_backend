@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - changeSet:
+      id: 000-enable-pgcrypto
+      author: pisethjavaschool
+      changes:
+        - sql:
+            sql: CREATE EXTENSION IF NOT EXISTS pgcrypto;

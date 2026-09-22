@@ -1,0 +1,72 @@
+តើពេលដែលយើងបង្កើត User តើដំបូងឡើងវាទៅបង្កើតនៅកន្លែង ណា
+
+ទើបតែ Register យើងអត់ទាន់ approve វាបាន JWT មកពីណា
+
+- ដំបូងគាត់អត់បាន Login ទេ ចឹងយើងត្រូវបោះ User contract នឹងឆ្លង់កាត់ pipe line 
+
+-----------------------
+
+System communication:
+
+
+1- First way solution : create user-client (to get userID)
+
+KeycloadUserId យើងដើរទៅតាមផ្លូវដែលមិនធ្វើ customize លើ Keycload 
+
+platform_user_id យើងបង្កើត User-client ដើម្បីធ្វើការទាញ User Id ពេលដែលយើងចង់បាន user id 
+
+(style call service directly)
+
+2- we customize the keycload to get the userID: long term solution 
+
+- we will update User_id to the Keycload : ពេលដែលគេ create user we will insert new field to the keycload
+ចឹងលើកក្រោយទៅពេលដែលយើង ធ្វើការ login JWT នឹងវានឹងមាន userid នឹងមកជាមួយគ្នាតែម្តង
+
+
+------------------------
+
+private final CurrentUserReader currentUserReader;
+    private final PropertyOwnerValidator validator;
+    private final PropertyOwnerFactory factory;
+    private final PropertyOwnerWriter writer;
+    private final PropertyOwnerMapper mapper;
+
+    @Override
+    @Transactional
+    public Mono<PropertyOwnerResponse> create(CreatePropertyOwnerRequest request) {
+        return currentUserReader.getCurrentUserId()
+                .flatMap(userId -> createForUser(userId, request));
+    }
+
+    @Override
+    @Transactional
+    public Mono<PropertyOwnerResponse> createForUser(UUID userId, CreatePropertyOwnerRequest request) {
+        Mono<PropertyOwnerResponse> creation = validator.validateUserHasNoOwner(userId)
+                .thenReturn(userId)
+                .map(id -> factory.createDraft(id, request))
+                .flatMap(writer::save)
+                .doOnNext(owner -> log.info("Business owner created: ownerId={}, userId={}", owner.getId(), owner.getUserId()))
+                .map(mapper::toResponse);
+
+        return PlatformAuditorContext.withAuditorId(creation, userId);
+    }
+
+----------------------------------
+
+អានេះគេហៅថា filed member :
+
+    private final PropertyOwnerValidator validator;
+    private final PropertyOwnerFactory factory;
+    private final PropertyOwnerWriter writer;
+    private final PropertyOwnerMapper mapper;
+
+
+
+
+
+
+
+
+
+
+

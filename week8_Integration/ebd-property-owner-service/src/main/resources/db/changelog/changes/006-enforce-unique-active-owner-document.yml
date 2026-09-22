@@ -1,0 +1,35 @@
+
+databaseChangeLog:
+  - changeSet:
+      id: 006-enforce-unique-active-owner-document
+      author: pisethjavaschool
+      changes:
+        - sql:
+            dbms: postgresql
+            splitStatements: false
+            sql: |
+              -- Existing local/dev data may already contain duplicate active
+              -- documents. Keep the newest active record for each owner/type
+              -- and deactivate older duplicates before adding the constraint.
+              WITH ranked AS (
+                  SELECT
+                      id,
+                      ROW_NUMBER() OVER (
+                          PARTITION BY owner_id, document_type_code
+                          ORDER BY created_at DESC, id DESC
+                      ) AS row_number
+                  FROM owner_document
+                  WHERE active = true
+              )
+              UPDATE owner_document document
+              SET
+                  active = false,
+                  updated_at = CURRENT_TIMESTAMP
+              FROM ranked
+              WHERE document.id = ranked.id
+                AND ranked.row_number > 1;
+
+              CREATE UNIQUE INDEX IF NOT EXISTS
+                  uk_owner_document_active_owner_type
+              ON owner_document(owner_id, document_type_code)
+              WHERE active = true;

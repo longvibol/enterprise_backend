@@ -1,0 +1,28 @@
+services:
+  user-postgres:
+    image: postgres:16
+    container_name: ps-user-postgres
+    environment:
+      POSTGRES_DB: user_db
+      POSTGRES_USER: user_service
+      POSTGRES_PASSWORD: UserService@2026
+      TZ: Asia/Phnom_Penh
+    ports:
+      - "5663:5432"
+    networks:
+      - pisethjavaschool-dev-net
+    volumes:
+      - userservice_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user_service -d user_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+
+volumes:
+  userservice_pg_data:
+
+networks:
+  pisethjavaschool-dev-net:
+    external: true
