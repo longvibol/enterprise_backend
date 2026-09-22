@@ -1,0 +1,21 @@
+services:
+  property-owner-postgres:
+    image: postgres:17-alpine
+    container_name: property-owner-postgres
+    environment:
+      POSTGRES_DB: property_owner
+      POSTGRES_USER: platformuser
+      POSTGRES_PASSWORD: Platform@2026
+    ports:
+      - "5444:5432"
+    volumes:
+      - ps_property_owner_postgres_data:/var/lib/postgresql/data
+    networks:
+      - pisethjavaschool-dev-net
+
+volumes:
+  ps_property_owner_postgres_data:
+
+networks:
+  pisethjavaschool-dev-net:
+    external: true

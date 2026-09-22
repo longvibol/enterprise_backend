@@ -1,0 +1,16 @@
+databaseChangeLog:
+  - changeSet:
+      id: 005-seed-owner-document-type
+      author: pisethjavaschool
+      changes:
+        - loadUpdateData:
+            tableName: owner_document_type
+            file: db/changelog/data/owner-document-type.csv
+            primaryKey: code
+            separator: ","
+            columns:
+              - column: { name: code, type: STRING }
+              - column: { name: name, type: STRING }
+              - column: { name: description, type: STRING }
+              - column: { name: active, type: BOOLEAN }
+              - column: { name: sort_order, type: NUMERIC }

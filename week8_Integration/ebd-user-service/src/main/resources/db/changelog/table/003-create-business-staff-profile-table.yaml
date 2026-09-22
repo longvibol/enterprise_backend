@@ -1,0 +1,71 @@
+databaseChangeLog:
+  - changeSet:
+      id: 003-create-business-staff-profile-table
+      author: pisethjavaschool
+      changes:
+        - createTable:
+            tableName: business_staff_profile
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  defaultValueComputed: gen_random_uuid()
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: user_account_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: organization_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: business_id
+                  type: uuid
+              - column:
+                  name: position
+                  type: varchar(100)
+              - column:
+                  name: invited_by
+                  type: uuid
+              - column:
+                  name: status
+                  type: varchar(30)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamp with time zone
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_by
+                  type: uuid
+              - column:
+                  name: updated_at
+                  type: timestamp with time zone
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_by
+                  type: uuid
+        - addForeignKeyConstraint:
+            baseTableName: business_staff_profile
+            baseColumnNames: user_account_id
+            referencedTableName: user_account
+            referencedColumnNames: id
+            constraintName: fk_business_staff_profile_user_account
+            onDelete: CASCADE
+        - createIndex:
+            tableName: business_staff_profile
+            indexName: idx_business_staff_profile_organization_id
+            columns:
+              - column:
+                  name: organization_id

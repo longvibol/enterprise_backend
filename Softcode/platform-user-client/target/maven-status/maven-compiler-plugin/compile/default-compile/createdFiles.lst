@@ -1,6 +1,0 @@
-com\pisethjavaschool\platform\user\client\dto\UserIdentityResponse.class
-com\pisethjavaschool\platform\user\client\config\PlatformUserClientProperties.class
-com\pisethjavaschool\platform\user\client\impl\DefaultPlatformUserClient.class
-com\pisethjavaschool\platform\user\client\PlatformUserClient.class
-META-INF\spring-configuration-metadata.json
-com\pisethjavaschool\platform\user\client\config\PlatformUserClientConfiguration.class

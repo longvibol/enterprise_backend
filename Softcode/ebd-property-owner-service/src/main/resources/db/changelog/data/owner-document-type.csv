@@ -1,0 +1,5 @@
+code,name,description,active,sort_order
+NATIONAL_ID,National ID,Cambodian national identity card,true,1
+PASSPORT,Passport,Passport document,true,2
+BUSINESS_LICENSE,Business License,Company or business registration license,true,3
+TAX_CERTIFICATE,Tax Certificate,Tax registration certificate,true,4

@@ -1,0 +1,186 @@
+- We use only one Postgress and create many database 
+
+- "property-owner-service" ប្រើប្រាស់ដើម្បី Trust owner service តើយើងទុកចិត្ត business គេនឹងអត់
+
+User
+│
+│ "I am Piseth"
+|
+PropertyOwner
+│
+│ "I operate Piseth Restaurant Group"
+│ "Here is my business information"
+│ "Here are my verification documents"
+│
+Business Trust Profile
+
+-----------------------------------
+
+- user-service owns identity.
+
+- property-owner-service owns business ownership and verification.
+
+
+2. Why does PropertyOwner contain userId?  
+
+- platform user : មានន័យថាយើងប្រើប្រាស់ គ្រប់ Service ទាំងអស់របស់យើង បើ server យើងមាន ២០ យើងប្រើប្រាស់តែមួយនឹងទេ
+
+យើងចង់ធ្វើការទាញ យក  File or Media អីយើងធ្វើការទាញយកតាម User profile នឹងមក.
+
+មានន័យថានៅក្នុង ower service យើងមាន ៖
+
+PropertyOwner
+id = O001
+userId = U001
+businessName = "Piseth Restaurant Group"
+
+យើងនៅក្នុង User ក៏យើងមាន User ID ដែលចឹង ពេលដែលយើងទាញមកតាម JWT យើងធ្វើការទាញយក User ID ដែល ហើយយក​មកផ្ទាង់ផ្ទាត់គ្នា ទើបយើងប្រាកដថា 
+ទាំងពីរ នឹងមិនខុសគ្នានោះទេ
+
+public Mono<PropertyOwner> getOwnedOwner(
+UUID ownerId,UUID userId) {
+
+return getById(ownerId)
+.flatMap(owner ->
+owner.getUserId().equals(userId)
+? Mono.just(owner)
+: Mono.error(
+new PropertyOwnerAccessDeniedException()));
+}
+
+
+យើងធ្វើការបោះ ownerId and userId ចូលហើយវា នឹងធ្វើការ Return back property owner នឹងចេញមក ដោយសារតែ platform របស់យើងនិងមិនមែនមានតែ have many owner user. ចឹងមានន័យថាយើងធ្វើការទាញយកតែ User ដែលកំពុងធ្វើការ login ទេ។​
+
+
+-----------------------------------------------------------------------------------
+
+3. Why only one owner profile per user? គ្រប់ plateform ទាំំងអស់ប្រើប្រាស់តែមួយ User នឹងទេហើយ វាត្រូវការ
+
+4. OwnerType: មានពីរប្រភេទ 
+
+1- ជាលក្ខណ​ៈ ឯកជន INDIVIDUAL 
+2- COMPANY 
+
+5. Why create an owner as DRAFT? ម្តេចបានយើងបង្កើតមកភ្លាមអោយវាជា Draft ចឹង
+
+6. Owner verification is a state machine? 
+
+Our statuses are:
+DRAFT,
+PENDING_REVIEW,
+VERIFIED,
+REJECTED,
+SUSPENDED
+
+
+DRAFT => PENDING_REVIEW
+REJECTED => PENDING_REVIEW
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

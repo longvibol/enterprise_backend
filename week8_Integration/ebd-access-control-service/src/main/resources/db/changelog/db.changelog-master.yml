@@ -1,0 +1,18 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/changes/script/000-enable-pgcrypto.yml
+  - include:
+      file: db/changelog/changes/script/001-create-access-permission.yml
+  - include:
+      file: db/changelog/changes/script/002-create-access-role.yml
+  - include:
+      file: db/changelog/changes/script/003-create-role-permission.yml
+  - include:
+      file: db/changelog/changes/script/004-create-user-role.yml
+
+  - include:
+      file: db/changelog/changes/seed/001-seed-access-permission.yml
+  - include:
+      file: db/changelog/changes/seed/002-seed-access-role.yml
+  - include:
+      file: db/changelog/changes/seed/003-seed-role-permission.yml
