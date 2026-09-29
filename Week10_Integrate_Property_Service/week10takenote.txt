@@ -1,0 +1,114 @@
+1- User-service : who is this person :អ្នកកំពុង login ជាអ្នកណាគេ
+2- Property-owner-service: អង្គភាពមួយណាជាអ្នកដំណាង អ្នកប្រើប្រាស់នឹង one user have only one owner property 
+3- access-control-service: what is this person allowed to do: អ្នកប្រើប្រាស់គេអនុញ្ញាត្តិអោយធ្វើ អីបានខ្លះ
+4- property-service : which Restaurant or ktv location exist and what is the their lifecycles
+
+--------------------
+
+OrganizationId vs propertyId
+
+
+- OrganizationId : proptery owner id : គ្រប់ Business ដែលគាត់ចុះឈ្មោះក្រោមនឹងសុទ្ធតែ ស្ថិតនៅក្រោម OrganizationId នឹងទាំងអស់
+
+
+------------------
+
+Dependancy to create resource server:
+
+ <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+        </dependency>
+
+យើងដាក់ dependancy ហើយ យកត្រូវ create been vir 
+
+--------------------------------------------------------
+
+package com.pisethjavaschool.property.config;
+
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+
+import com.pisethjavaschool.platform.accesscontrol.client.config.AccessControlClientConfiguration;
+import com.pisethjavaschool.platform.exception.GlobalExceptionHandler;
+import com.pisethjavaschool.platform.openapi.PlatformOpenApiConfig;
+import com.pisethjavaschool.platform.propertyowner.client.config.PropertyOwnerClientConfiguration;
+import com.pisethjavaschool.platform.r2dbc.PlatformReactiveTransactionManagementConfig;
+import com.pisethjavaschool.platform.r2dbc.config.PlatformR2dbcAuditingAutoConfiguration;
+import com.pisethjavaschool.platform.security.audit.SecurityCurrentAuditorProvider;
+import com.pisethjavaschool.platform.security.config.CurrentUserReaderConfiguration;
+import com.pisethjavaschool.platform.user.client.config.PlatformUserClientConfiguration;
+import com.pisethjavaschool.platform.web.PlatformWebFluxConversionConfig;
+import com.pisethjavaschool.platform.web.RequestIdWebFilter;
+
+@Configuration
+@Import({
+        GlobalExceptionHandler.class,
+        PlatformOpenApiConfig.class,
+        PlatformReactiveTransactionManagementConfig.class,
+        PlatformR2dbcAuditingAutoConfiguration.class,
+        SecurityCurrentAuditorProvider.class, //
+        PlatformUserClientConfiguration.class,//
+        CurrentUserReaderConfiguration.class,//
+        PropertyOwnerClientConfiguration.class,//
+        AccessControlClientConfiguration.class, //
+        PlatformWebFluxConversionConfig.class,
+        RequestIdWebFilter.class
+})
+public class PlatformLibrariesConfig {
+}
+
+--------------------------------------------------------------------------------
+
+ហើយយើងត្រូវធ្វើការ ដាក់ URL vir : in the application.yml:
+
+
+platform:
+  clients:
+    user:
+      base-url: ${USER_SERVICE_URL:http://localhost:8089}
+    property-owner:
+      base-url: ${PROPERTY_OWNER_SERVICE_URL:http://localhost:8069}
+    access-control:
+      base-url: ${ACCESS_CONTROL_SERVICE_URL:http://localhost:8097}	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
