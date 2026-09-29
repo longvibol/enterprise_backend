@@ -1,0 +1,21 @@
+services:
+  property-postgres:
+    image: postgres:17-alpine
+    container_name: property-postgres
+    environment:
+      POSTGRES_DB: property
+      POSTGRES_USER: pisethschool
+      POSTGRES_PASSWORD: PisethSchool@2026
+    ports:
+      - "5438:5432"
+    volumes:
+      - property_postgres_data:/var/lib/postgresql/data
+    networks:
+      - restaurant-ktv-dev-net
+
+volumes:
+  property_postgres_data:
+
+networks:
+  restaurant-ktv-dev-net:
+    external: true

@@ -1,5 +1,6 @@
 package com.pisethjavaschool.platform.accesscontrol.client.config;
 
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,10 +12,13 @@ import com.pisethjavaschool.platform.accesscontrol.client.impl.DefaultAccessCont
 @Configuration
 @EnableConfigurationProperties(AccessControlClientProperties.class)
 public class AccessControlClientConfiguration {
-    @Bean
+	
+	@Bean
     public AccessControlClient accessControlClient(
-            WebClient.Builder webClientBuilder,
+            ObjectProvider<WebClient.Builder> webClientBuilderProvider,
             AccessControlClientProperties properties) {
-        return new DefaultAccessControlClient(webClientBuilder, properties);
+        WebClient.Builder builder = webClientBuilderProvider.getIfAvailable(WebClient::builder);
+        return new DefaultAccessControlClient(builder, properties);
     }
+    
 }
