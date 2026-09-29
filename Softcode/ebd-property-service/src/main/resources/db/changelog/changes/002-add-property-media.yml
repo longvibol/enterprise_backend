@@ -1,0 +1,88 @@
+
+databaseChangeLog:
+  - changeSet:
+      id: 002-add-property-media
+      author: pisethjavaschool
+      changes:
+        - addColumn:
+            tableName: property
+            columns:
+              - column:
+                  name: thumbnail_media_id
+                  type: UUID
+
+        - createTable:
+            tableName: property_image
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  defaultValueComputed: gen_random_uuid()
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: property_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: media_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: sort_order
+                  type: INT
+                  defaultValueNumeric: 0
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: thumbnail
+                  type: BOOLEAN
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: created_at
+                  type: TIMESTAMP WITH TIME ZONE
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: created_by
+                  type: UUID
+
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP WITH TIME ZONE
+
+              - column:
+                  name: updated_by
+                  type: UUID
+
+        - addForeignKeyConstraint:
+            baseTableName: property_image
+            baseColumnNames: property_id
+            referencedTableName: property
+            referencedColumnNames: id
+            constraintName: fk_property_image_property
+            onDelete: CASCADE
+
+        - addUniqueConstraint:
+            tableName: property_image
+            columnNames: property_id, media_id
+            constraintName: uk_property_image_property_media
+
+        - createIndex:
+            tableName: property_image
+            indexName: idx_property_image_property_id
+            columns:
+              - column:
+                  name: property_id
