@@ -2,8 +2,6 @@ package com.pisethjavaschool.platform.accesscontrol.client.impl;
 
 import java.util.UUID;
 
-import org.springframework.security.core.context.ReactiveSecurityContextHolder;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.pisethjavaschool.platform.accesscontrol.client.AccessControlClient;
@@ -13,6 +11,7 @@ import com.pisethjavaschool.platform.accesscontrol.client.dto.PermissionCheckReq
 import com.pisethjavaschool.platform.accesscontrol.client.dto.PermissionCheckResponse;
 import com.pisethjavaschool.platform.accesscontrol.client.enums.AccessRoleCode;
 import com.pisethjavaschool.platform.accesscontrol.client.enums.AccessScopeType;
+import com.pisethjavaschool.platform.security.CurrentUserSupport;
 
 import reactor.core.publisher.Mono;
 
@@ -38,7 +37,7 @@ public class DefaultAccessControlClient implements AccessControlClient {
     @Override
     public Mono<Boolean> hasPermission(UUID userId, String permissionCode, AccessScopeType scopeType, UUID scopeId) {
         var body = new PermissionCheckRequest(userId, permissionCode, scopeType, scopeId);
-        return currentBearerToken().defaultIfEmpty("").flatMap(token -> {
+        return CurrentUserSupport.currentBearerToken().defaultIfEmpty("").flatMap(token -> {
             WebClient.RequestBodySpec request = webClient.post().uri(rootPath + "/check-permission");
             if (!token.isBlank()) {
                 request.headers(headers -> headers.setBearerAuth(token));
@@ -47,10 +46,5 @@ public class DefaultAccessControlClient implements AccessControlClient {
         }).map(PermissionCheckResponse::allowed);
     }
 
-    private Mono<String> currentBearerToken() {
-        return ReactiveSecurityContextHolder.getContext()
-                .map(context -> context.getAuthentication())
-                .ofType(JwtAuthenticationToken.class)
-                .map(authentication -> authentication.getToken().getTokenValue());
-    }
+   
 }

@@ -2,8 +2,6 @@ package com.pisethjavaschool.platform.propertyowner.client.impl;
 
 import java.util.UUID;
 
-import org.springframework.security.core.context.ReactiveSecurityContextHolder;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.pisethjavaschool.platform.propertyowner.client.PropertyOwnerClient;
@@ -11,6 +9,7 @@ import com.pisethjavaschool.platform.propertyowner.client.config.PropertyOwnerCl
 import com.pisethjavaschool.platform.propertyowner.client.dto.CreatePropertyOwnerCommand;
 import com.pisethjavaschool.platform.propertyowner.client.dto.PropertyOwnerCreatedResponse;
 import com.pisethjavaschool.platform.propertyowner.client.dto.PropertyOwnerSummary;
+import com.pisethjavaschool.platform.security.CurrentUserSupport;
 
 import reactor.core.publisher.Mono;
 public class DefaultPropertyOwnerClient implements PropertyOwnerClient {
@@ -34,7 +33,7 @@ public class DefaultPropertyOwnerClient implements PropertyOwnerClient {
     
     @Override
     public Mono<PropertyOwnerSummary> getByUserId(UUID userId) {
-        return currentBearerToken().defaultIfEmpty("").flatMap(token -> {
+        return CurrentUserSupport.currentBearerToken().defaultIfEmpty("").flatMap(token -> {
             WebClient.RequestHeadersSpec<?> request = webClient.get()
                     .uri(rootPath + "/by-user/{userId}", userId);
             if (!token.isBlank()) {
@@ -44,12 +43,6 @@ public class DefaultPropertyOwnerClient implements PropertyOwnerClient {
         });
     }
 
-    private Mono<String> currentBearerToken() {
-        return ReactiveSecurityContextHolder.getContext()
-                .map(context -> context.getAuthentication())
-                .ofType(JwtAuthenticationToken.class)
-                .map(authentication -> authentication.getToken().getTokenValue());
-    }
 }
 
 

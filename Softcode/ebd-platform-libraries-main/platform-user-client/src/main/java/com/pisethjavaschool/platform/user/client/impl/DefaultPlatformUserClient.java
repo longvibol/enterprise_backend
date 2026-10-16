@@ -2,10 +2,9 @@ package com.pisethjavaschool.platform.user.client.impl;
 
 import java.util.UUID;
 
-import org.springframework.security.core.context.ReactiveSecurityContextHolder;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import com.pisethjavaschool.platform.security.CurrentUserSupport;
 import com.pisethjavaschool.platform.user.client.PlatformUserClient;
 import com.pisethjavaschool.platform.user.client.config.PlatformUserClientProperties;
 import com.pisethjavaschool.platform.user.client.dto.UserIdentityResponse;
@@ -22,7 +21,7 @@ public class DefaultPlatformUserClient implements PlatformUserClient {
 
     @Override
     public Mono<UUID> resolvePlatformUserId(UUID keycloakUserId) {
-        return currentBearerToken()
+        return CurrentUserSupport.currentBearerToken()
                 .defaultIfEmpty("")
                 .flatMap(token -> {
                     WebClient.RequestHeadersSpec<?> request = webClient.get()
@@ -35,10 +34,4 @@ public class DefaultPlatformUserClient implements PlatformUserClient {
                 .map(UserIdentityResponse::id);
     }
 
-    private Mono<String> currentBearerToken() {
-        return ReactiveSecurityContextHolder.getContext()
-                .map(context -> context.getAuthentication())
-                .ofType(JwtAuthenticationToken.class)
-                .map(authentication -> authentication.getToken().getTokenValue());
-    }
 }

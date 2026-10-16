@@ -15,14 +15,14 @@ import com.pisethjavaschool.platform.web.RequestIdWebFilter;
 
 @Configuration
 @Import({
-        GlobalExceptionHandler.class,
-        PlatformOpenApiConfig.class,
-        AccessControlClientConfiguration.class,
+//        GlobalExceptionHandler.class,
+//        PlatformOpenApiConfig.class,
+//        AccessControlClientConfiguration.class,
         PlatformReactiveTransactionManagementConfig.class,
         SecurityCurrentAuditorProvider.class,
         CurrentUserReaderConfiguration.class,
         PlatformWebFluxConversionConfig.class,
-        PropertyOwnerClientConfiguration.class,
+//        PropertyOwnerClientConfiguration.class,
         RequestIdWebFilter.class
 })
 public class PlatformLibrariesConfig {
