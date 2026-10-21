@@ -2,6 +2,8 @@ package com.pisethjavaschool.platform.accesscontrol.client.impl;
 
 import java.util.UUID;
 
+import org.springframework.security.core.context.ReactiveSecurityContextHolder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.pisethjavaschool.platform.accesscontrol.client.AccessControlClient;
@@ -46,5 +48,4 @@ public class DefaultAccessControlClient implements AccessControlClient {
         }).map(PermissionCheckResponse::allowed);
     }
 
-   
 }

@@ -113,7 +113,7 @@ public class UserCommandServiceImpl implements UserCommandService {
                 .flatMap(account -> profileRepository.findByUserAccountId(account.getId())
                         .map(profile -> mapper.toResponse(account, profile)));
     }
-
+    /*
     private Mono<UserAccount> createIdentity(CreateUserRequest request, String username) {
         return keycloakUserClient.createUser(username, request.email(), request.firstName(), request.lastName(), request.password(), true)
                 .flatMap(keycloakUserId -> {
@@ -125,6 +125,23 @@ public class UserCommandServiceImpl implements UserCommandService {
                             RegistrationStatus.COMPLETED
                     );
                     return accountRepository.save(account);
+                });
+    }
+    */
+    
+    private Mono<UserAccount> createIdentity(CreateUserRequest request, String username) {
+        return keycloakUserClient.createUser(username, request.email(), request.firstName(), request.lastName(), request.password(), true)
+                .flatMap(keycloakUserId -> {
+                    UserAccount account = mapper.toAccount(
+                            request,
+                            username,
+                            keycloakUserId,
+                            AccountStatus.ACTIVE,
+                            RegistrationStatus.COMPLETED
+                    );
+                    return accountRepository.save(account)
+                            .flatMap(saved -> keycloakUserClient.setPlatformUserId(keycloakUserId, saved.getId()) // NEW
+                                    .thenReturn(saved));
                 });
     }
 

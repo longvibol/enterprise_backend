@@ -43,6 +43,7 @@ public class DefaultPropertyOwnerClient implements PropertyOwnerClient {
         });
     }
 
+    
 }
 
 

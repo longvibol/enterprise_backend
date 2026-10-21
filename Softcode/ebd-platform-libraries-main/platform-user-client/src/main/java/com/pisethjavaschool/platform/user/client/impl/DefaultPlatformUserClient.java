@@ -2,12 +2,15 @@ package com.pisethjavaschool.platform.user.client.impl;
 
 import java.util.UUID;
 
+import org.springframework.security.core.context.ReactiveSecurityContextHolder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.pisethjavaschool.platform.security.CurrentUserSupport;
 import com.pisethjavaschool.platform.user.client.PlatformUserClient;
 import com.pisethjavaschool.platform.user.client.config.PlatformUserClientProperties;
 import com.pisethjavaschool.platform.user.client.dto.UserIdentityResponse;
+import com.pisethjavaschool.platform.security.CurrentUserSupport;
 
 import reactor.core.publisher.Mono;
 public class DefaultPlatformUserClient implements PlatformUserClient {
@@ -34,4 +37,5 @@ public class DefaultPlatformUserClient implements PlatformUserClient {
                 .map(UserIdentityResponse::id);
     }
 
+    
 }

@@ -1,5 +1,7 @@
 package com.pisethjavaschool.userservice.authentication.keycloak;
 
+import java.util.UUID;
+
 import reactor.core.publisher.Mono;
 
 public interface KeycloakUserClient {
@@ -7,6 +9,8 @@ public interface KeycloakUserClient {
 			boolean enabled);
 
 	Mono<Void> updateUser(String keycloakUserId, String email, String firstName, String lastName, boolean enabled);
+	
+	Mono<Void> setPlatformUserId(String keycloakUserId, UUID platformUserId); 
 
 	Mono<Void> resetPassword(String keycloakUserId, String password);
 

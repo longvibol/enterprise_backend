@@ -20,5 +20,5 @@ public class AccessControlClientConfiguration {
         WebClient.Builder builder = webClientBuilderProvider.getIfAvailable(WebClient::builder);
         return new DefaultAccessControlClient(builder, properties);
     }
-
+    
 }
