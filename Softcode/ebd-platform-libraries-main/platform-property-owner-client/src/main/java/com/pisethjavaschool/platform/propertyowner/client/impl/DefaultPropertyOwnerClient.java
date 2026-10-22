@@ -10,17 +10,32 @@ import com.pisethjavaschool.platform.propertyowner.client.dto.CreatePropertyOwne
 import com.pisethjavaschool.platform.propertyowner.client.dto.PropertyOwnerCreatedResponse;
 import com.pisethjavaschool.platform.propertyowner.client.dto.PropertyOwnerSummary;
 import com.pisethjavaschool.platform.security.CurrentUserSupport;
+import com.pisethjavaschool.platform.security.ProvisioningAccessTokenProvider;
 
 import reactor.core.publisher.Mono;
 public class DefaultPropertyOwnerClient implements PropertyOwnerClient {
     private final WebClient webClient;
     private final String rootPath;
+    private final ProvisioningAccessTokenProvider tokenProvider; // NEW
 
-    public DefaultPropertyOwnerClient(WebClient.Builder builder, PropertyOwnerClientProperties properties) {
+    public DefaultPropertyOwnerClient(WebClient.Builder builder, PropertyOwnerClientProperties properties, ProvisioningAccessTokenProvider tokenProvider) {
         this.webClient = builder.baseUrl(properties.getBaseUrl()).build();
         this.rootPath = properties.getRootPath();
+        this.tokenProvider = tokenProvider;
     }
 
+    @Override
+    public Mono<UUID> createOwner(CreatePropertyOwnerCommand command) {
+        return tokenProvider.token().flatMap(token -> webClient.post()
+                .uri(rootPath + "/internal")
+                .headers(headers -> headers.setBearerAuth(token))
+                .bodyValue(command)
+                .retrieve()
+                .bodyToMono(PropertyOwnerCreatedResponse.class)
+                .map(PropertyOwnerCreatedResponse::organizationId));
+    }
+
+    /*
     @Override
     public Mono<UUID> createOwner(CreatePropertyOwnerCommand command) {
         return webClient.post()
@@ -30,6 +45,7 @@ public class DefaultPropertyOwnerClient implements PropertyOwnerClient {
                 .bodyToMono(PropertyOwnerCreatedResponse.class)
                 .map(PropertyOwnerCreatedResponse::organizationId);
     }
+    */
     
     @Override
     public Mono<PropertyOwnerSummary> getByUserId(UUID userId) {
@@ -45,7 +61,6 @@ public class DefaultPropertyOwnerClient implements PropertyOwnerClient {
 
     
 }
-
 
 
 

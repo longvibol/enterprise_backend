@@ -132,12 +132,6 @@
             <artifactId>platform-security</artifactId>
             <version>${platform-libraries.version}</version>
         </dependency>
-        
-        <dependency>
-            <groupId>com.pisethjavaschool.platform</groupId>
-            <artifactId>platform-user-client</artifactId>
-            <version>${platform-libraries.version}</version>
-        </dependency>
 
         <!-- Mapping -->
         <dependency>

@@ -1,24 +1,28 @@
 package com.pisethjavaschool.userservice.user.service.impl;
 
 import java.util.UUID;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.pisethjavaschool.platform.security.PlatformAuditorContext;
+import com.pisethjavaschool.userservice.authentication.keycloak.KeycloakUserClient;
+import com.pisethjavaschool.userservice.common.exception.DuplicateUserException;
+import com.pisethjavaschool.userservice.common.exception.NotFoundException;
+import com.pisethjavaschool.userservice.common.service.PasswordPolicy;
+import com.pisethjavaschool.userservice.common.service.UsernameResolver;
+import com.pisethjavaschool.userservice.user.dto.CreateUserRequest;
+import com.pisethjavaschool.userservice.user.dto.UpdateUserRequest;
+import com.pisethjavaschool.userservice.user.dto.UserResponse;
 import com.pisethjavaschool.userservice.user.entity.UserAccount;
 import com.pisethjavaschool.userservice.user.entity.UserProfile;
 import com.pisethjavaschool.userservice.user.enums.AccountStatus;
 import com.pisethjavaschool.userservice.user.enums.RegistrationStatus;
-import com.pisethjavaschool.userservice.user.dto.CreateUserRequest;
-import com.pisethjavaschool.userservice.user.dto.UpdateUserRequest;
-import com.pisethjavaschool.userservice.user.dto.UserResponse;
-import com.pisethjavaschool.userservice.common.exception.DuplicateUserException;
-import com.pisethjavaschool.userservice.common.exception.NotFoundException;
 import com.pisethjavaschool.userservice.user.mapper.UserMapper;
 import com.pisethjavaschool.userservice.user.repository.UserAccountRepository;
 import com.pisethjavaschool.userservice.user.repository.UserProfileRepository;
 import com.pisethjavaschool.userservice.user.service.UserCommandService;
-import com.pisethjavaschool.userservice.authentication.keycloak.KeycloakUserClient;
-import com.pisethjavaschool.userservice.common.service.PasswordPolicy;
-import com.pisethjavaschool.userservice.common.service.UsernameResolver;
+
 import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Mono;
 
@@ -31,7 +35,13 @@ public class UserCommandServiceImpl implements UserCommandService {
     private final UserMapper mapper;
     private final UsernameResolver usernameResolver;
     private final PasswordPolicy passwordPolicy;
+    
+ // Explicit system actor for public registration. No JWT or Keycloak subject fallback.
+    // The UUID is reserved for registration operations, not an end-user identity.
+    private static final UUID REGISTRATION_SYSTEM_AUDITOR =
+            UUID.fromString("00000000-0000-0000-0000-000000000001");
 
+/*
     @Override
     @Transactional
     public Mono<UserResponse> create(CreateUserRequest request) {
@@ -41,6 +51,19 @@ public class UserCommandServiceImpl implements UserCommandService {
                 .then(createIdentity(request, username))
                 .flatMap(account -> createProfile(account, request)
                         .map(profile -> mapper.toResponse(account, profile)));
+    }
+    */
+    
+    @Override
+    @Transactional
+    public Mono<UserResponse> create(CreateUserRequest request) {
+        String username = usernameResolver.resolve(request.email(), request.countryCode(), request.phoneNumber());
+        Mono<UserResponse> registration = passwordPolicy.validate(request.password())
+                .then(validateUniqueUsername(username))
+                .then(createIdentity(request, username))
+                .flatMap(account -> createProfile(account, request)
+                        .map(profile -> mapper.toResponse(account, profile)));
+        return PlatformAuditorContext.withAuditorId(registration, REGISTRATION_SYSTEM_AUDITOR);
     }
 
     @Override

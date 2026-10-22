@@ -23,7 +23,6 @@
         <module>platform-r2dbc</module>
         <module>platform-logging</module>
         <module>platform-access-control-client</module>
-        <module>platform-user-client</module>
         <module>platform-property-owner-client</module>
     </modules>
 

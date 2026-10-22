@@ -8,6 +8,8 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import com.pisethjavaschool.platform.propertyowner.client.PropertyOwnerClient;
 import com.pisethjavaschool.platform.propertyowner.client.impl.DefaultPropertyOwnerClient;
+import com.pisethjavaschool.platform.security.ProvisioningAccessTokenProvider;
+
 @Configuration
 @EnableConfigurationProperties(PropertyOwnerClientProperties.class)
 public class PropertyOwnerClientConfiguration {
@@ -15,9 +17,9 @@ public class PropertyOwnerClientConfiguration {
     @Bean
     public PropertyOwnerClient propertyOwnerClient(
             ObjectProvider<WebClient.Builder> webClientBuilderProvider,
-            PropertyOwnerClientProperties properties) {
+            PropertyOwnerClientProperties properties, ProvisioningAccessTokenProvider tokenProvider) {
 
         WebClient.Builder builder = webClientBuilderProvider.getIfAvailable(WebClient::builder);
-        return new DefaultPropertyOwnerClient(builder, properties);
+        return new DefaultPropertyOwnerClient(builder, properties, tokenProvider);
     }
 }
