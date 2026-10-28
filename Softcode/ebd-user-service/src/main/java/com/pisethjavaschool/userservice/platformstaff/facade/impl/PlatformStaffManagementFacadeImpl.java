@@ -3,7 +3,7 @@ package com.pisethjavaschool.userservice.platformstaff.facade.impl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.pisethjavaschool.platform.accesscontrol.client.AccessControlClient;
+import com.pisethjavaschool.platform.accesscontrol.client.AccessControlProvisioningClient;
 import com.pisethjavaschool.platform.accesscontrol.client.enums.AccessRoleCode;
 import com.pisethjavaschool.userservice.platformstaff.dto.CreatePlatformStaffRequest;
 import com.pisethjavaschool.userservice.platformstaff.facade.PlatformStaffManagementFacade;
@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class PlatformStaffManagementFacadeImpl implements PlatformStaffManagementFacade {
     private final UserCommandService userCommandService;
-    private final AccessControlClient accessControlClient;
+    private final AccessControlProvisioningClient accessControlClient;
     private final PlatformStaffMapper mapper;
 
     @Override

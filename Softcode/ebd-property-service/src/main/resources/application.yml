@@ -30,6 +30,9 @@ management:
 logging:
   level:
     com.pisethjavaschool.property: INFO
+# Enable the privileged property-owner client only for the registration orchestrator.
+platform.clients.property-owner.provisioning.enabled: false
+platform.clients.access-control.provisioning.enabled: false
 
 platform:
   clients:

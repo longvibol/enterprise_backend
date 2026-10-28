@@ -21,7 +21,7 @@ spring:
           user-service-provisioning:
             provider: provisioning-keycloak
             client-id: ${PROVISIONING_CLIENT_ID:user-service-provisioning}
-            client-secret: ${PROVISIONING_CLIENT_SECRET:llObwT2g150VNBThdtHLR97XWQEWlsJD}
+            client-secret: ${PROVISIONING_CLIENT_SECRET:qjnYuTNyHpovXdcMx6kEZgmoRZFL5Q8M}
             authorization-grant-type: client_credentials
         provider:
           provisioning-keycloak:
@@ -49,10 +49,10 @@ keycloak:
   realm: ${KEYCLOAK_REALM:restaurant-ktv-platform}
   admin:
     client-id: ${KEYCLOAK_ADMIN_CLIENT_ID:user-service}
-    client-secret: ${KEYCLOAK_ADMIN_CLIENT_SECRET:dvCOJLppnL9fFD7sGKdHk4fO7jTMPaQY}
+    client-secret: ${KEYCLOAK_ADMIN_CLIENT_SECRET:Ea0sBEuJkJSAt34JIIOYrXffbQEbSRSB}
   login:
     client-id: ${KEYCLOAK_LOGIN_CLIENT_ID:user-login}
-    client-secret: ${KEYCLOAK_LOGIN_CLIENT_SECRET:gsifWhcQNoIgdEDuQopjR1hiIxxTavlB}
+    client-secret: ${KEYCLOAK_LOGIN_CLIENT_SECRET:xUGbftWyuhAmlNciURkaWVO13sAl8GfT}
 
 #platform:
 #  clients:
@@ -68,10 +68,10 @@ platform:
   clients:
     access-control:
       base-url: ${ACCESS_CONTROL_SERVICE_URL:http://localhost:8097}
-      root-path: /api/v1/access-control     
+      root-path: /api/v1/access-control			
     property-owner:
       base-url: ${PROPERTY_OWNER_SERVICE_URL:http://localhost:8069}
-      root-path: /api/v1/property-owners      
+      root-path: /api/v1/property-owners			
 
 
 management:
@@ -88,3 +88,6 @@ management:
 logging:
   level:
     com.pisethjavaschool.userservice: INFO
+# Registration orchestrator requires provisioning credentials.
+platform.clients.property-owner.provisioning.enabled: true
+platform.clients.access-control.provisioning.enabled: true

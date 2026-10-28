@@ -4,7 +4,7 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import com.pisethjavaschool.platform.accesscontrol.client.AccessControlClient;
+import com.pisethjavaschool.platform.accesscontrol.client.AccessControlQueryClient;
 import com.pisethjavaschool.platform.accesscontrol.client.enums.AccessScopeType;
 import com.pisethjavaschool.property.enums.BusinessType;
 import com.pisethjavaschool.property.exception.PropertyAccessDeniedException;
@@ -16,7 +16,7 @@ import reactor.core.publisher.Mono;
 @Service
 @RequiredArgsConstructor
 public class PropertyAuthorizationServiceImpl implements PropertyAuthorizationService {
-    private final AccessControlClient accessControlClient;
+    private final AccessControlQueryClient accessControlClient;
 
     @Override
     public Mono<Void> validateCreate(UUID userId, UUID organizationId, BusinessType businessType) {
