@@ -1,0 +1,5 @@
+1- Service registry : for load balancer : to improve the performance 
+- consul : is the service registry for load balancer 
+
+
+

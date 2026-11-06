@@ -31,5 +31,11 @@
             <artifactId>platform-security</artifactId>
             <version>${project.version}</version>
         </dependency>
+        
+        <!-- Consul -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-consul-discovery</artifactId>
+		</dependency>
     </dependencies>
 </project>

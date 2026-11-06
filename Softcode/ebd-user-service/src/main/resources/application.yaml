@@ -31,15 +31,27 @@ spring:
           issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:9292/realms/restaurant-ktv-platform}
           jwk-set-uri: ${KEYCLOAK_JWK_SET_URI:http://localhost:9292/realms/restaurant-ktv-platform/protocol/openid-connect/certs}
 
-#  cloud:
-#    consul:
-#      host: ${CONSUL_HOST:localhost}
-#      port: ${CONSUL_PORT:8500}
-#      discovery:
-#        enabled: ${CONSUL_DISCOVERY_ENABLED:false}
-#        service-name: ${spring.application.name}
-#        prefer-ip-address: true
-#        health-check-path: /actuator/health
+  cloud:
+    consul:
+      host: ${CONSUL_HOST:localhost}
+      port: ${CONSUL_PORT:8600}
+      discovery:
+        enabled: ${CONSUL_DISCOVERY_ENABLED:true}
+        register: true
+        service-name: ${spring.application.name}
+        prefer-ip-address: true
+        health-check-path: /actuator/health
+        health-check-interval: 10s
+
+management:
+  consul:
+    host: localhost
+    port: 8600
+    discovery:
+      enabled: true
+      register: true
+      health-check-path: /actuator/health
+      health-check-interval: 10s
 
 server:
   port: ${SERVER_PORT:8089}
@@ -67,18 +79,12 @@ keycloak:
 platform:
   clients:
     access-control:
-      base-url: ${ACCESS_CONTROL_SERVICE_URL:http://localhost:8097}
+      base-url: ${ACCESS_CONTROL_SERVICE_URL:http://access-control-service}
       root-path: /api/v1/access-control			
     property-owner:
-      base-url: ${PROPERTY_OWNER_SERVICE_URL:http://localhost:8069}
+      base-url: ${PROPERTY_OWNER_SERVICE_URL:http://property-owner-service}
       root-path: /api/v1/property-owners			
 
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,info,prometheus
 
   endpoint:
     health:

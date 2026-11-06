@@ -1,0 +1,88 @@
+server:
+  port: ${SERVER_PORT:9098}
+  shutdown: graceful
+spring:
+  application:
+    name: gateway-service
+  lifecycle:
+    timeout-per-shutdown-phase: 30s
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:9292/realms/restaurant-ktv-platform}
+          jwk-set-uri: ${KEYCLOAK_JWK_SET_URI:http://localhost:9292/realms/restaurant-ktv-platform/protocol/openid-connect/certs}
+  cloud:
+    consul:
+      host: ${CONSUL_HOST:localhost}
+      port: ${CONSUL_PORT:8600}
+      discovery:
+        register: true
+        service-name: ${spring.application.name}
+        prefer-ip-address: true
+        health-check-path: /actuator/health/readiness
+        health-check-interval: 15s
+    gateway:
+      server:
+        webflux:
+          httpclient:
+            connect-timeout: 3000
+            response-timeout: 15s
+          routes:
+            # Public contract groups user-service APIs under /api/v1/users.
+            # Existing /api/v1/users/{id} endpoints already match the backend path.
+            - id: user-registration
+              uri: lb://user-service
+              predicates:
+                - Path=/api/v1/users/register/**
+              filters:
+                - RewritePath=/api/v1/users/register/(?<remaining>.*), /api/v1/register/$\{remaining}
+            - id: user-authentication
+              uri: lb://user-service
+              predicates:
+                - Path=/api/v1/users/auth/**
+              filters:
+                - RewritePath=/api/v1/users/auth/(?<remaining>.*), /api/v1/auth/$\{remaining}
+            - id: user-platform-staff
+              uri: lb://user-service
+              predicates:
+                - Path=/api/v1/users/platform-staff/**
+              filters:
+                - RewritePath=/api/v1/users/platform-staff/(?<remaining>.*), /api/v1/platform-staff/$\{remaining}
+            - id: user-business-staff
+              uri: lb://user-service
+              predicates:
+                - Path=/api/v1/users/business-staff/**
+              filters:
+                - RewritePath=/api/v1/users/business-staff/(?<remaining>.*), /api/v1/business-staff/$\{remaining}
+            - id: user-service
+              uri: lb://user-service
+              predicates:
+                - Path=/api/v1/users/**
+            # These services already use the public prefix in their controllers.
+            # Do not strip it: doing so would break their existing endpoints.
+            - id: access-control-service
+              uri: lb://access-control-service
+              predicates:
+                - Path=/api/v1/access-control/**
+            - id: property-owner-service
+              uri: lb://property-owner-service
+              predicates:
+                - Path=/api/v1/property-owners/**
+            - id: property-service
+              uri: lb://property-service
+              predicates:
+                - Path=/api/v1/properties/**
+
+gateway:
+  allowed-origins: ${GATEWAY_ALLOWED_ORIGINS:http://localhost:4200}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      show-details: never

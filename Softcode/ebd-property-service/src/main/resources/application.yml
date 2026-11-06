@@ -18,14 +18,31 @@ spring:
           issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:9292/realms/restaurant-ktv-platform}
           jwk-set-uri: ${KEYCLOAK_JWK_SET_URI:http://localhost:9292/realms/restaurant-ktv-platform/protocol/openid-connect/certs}
 
+  cloud:
+    consul:
+      host: ${CONSUL_HOST:localhost}
+      port: ${CONSUL_PORT:8600}
+      discovery:
+        enabled: ${CONSUL_DISCOVERY_ENABLED:true}
+        register: true
+        service-name: ${spring.application.name}
+        prefer-ip-address: true
+        health-check-path: /actuator/health
+        health-check-interval: 10s
+
+management:
+  consul:
+    host: localhost
+    port: 8600
+    discovery:
+      enabled: true
+      register: true
+      health-check-path: /actuator/health
+      health-check-interval: 10s
+
 server:
   port: ${SERVER_PORT:8068}
 
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,info,prometheus
 
 logging:
   level:
@@ -36,8 +53,6 @@ platform.clients.access-control.provisioning.enabled: false
 
 platform:
   clients:
-    user:
-      base-url: ${USER_SERVICE_URL:http://localhost:8089}
     property-owner:
       base-url: ${PROPERTY_OWNER_SERVICE_URL:http://localhost:8069}
     access-control:

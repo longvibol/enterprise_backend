@@ -4,7 +4,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(prefix = "platform.clients.access-control")
 public class AccessControlClientProperties {
-	private String baseUrl = "http://localhost:8091";
+	private String baseUrl = "http://access-control-service";
 	private String rootPath = "/api/v1/access-control";
 
 	public String getBaseUrl() {

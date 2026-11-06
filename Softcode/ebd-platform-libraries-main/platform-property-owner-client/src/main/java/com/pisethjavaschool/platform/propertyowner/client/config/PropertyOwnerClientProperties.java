@@ -4,7 +4,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(prefix = "platform.clients.property-owner")
 public class PropertyOwnerClientProperties {
-	private String baseUrl = "http://localhost:8069";
+	private String baseUrl = "http://property-owner-service";
 	private String rootPath = "/api/v1/property-owners";
 
 	public String getBaseUrl() {
