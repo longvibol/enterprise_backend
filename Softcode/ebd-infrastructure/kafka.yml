@@ -1,0 +1,84 @@
+name: ebd-kafka-stack
+
+services:
+  kafka-1:
+    image: apache/kafka:4.1.0
+    container_name: ebd-kafka-1
+    hostname: kafka-1
+    ports:
+      - "7072:7072"
+    environment: &kafka-common
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_LISTENERS: INTERNAL://:29092,EXTERNAL://:7072,CONTROLLER://:19093
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka-1:29092,EXTERNAL://${HOST_IP:-127.0.0.1}:7072
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT,CONTROLLER:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka-1:19093,2@kafka-2:19093,3@kafka-3:19093
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "false"
+      KAFKA_LOG_DIRS: /var/lib/kafka/data
+      CLUSTER_ID: ${KAFKA_CLUSTER_ID:?Set KAFKA_CLUSTER_ID in .env}
+    volumes:
+      - kafka1-data:/var/lib/kafka/data
+    networks: [ebd-dev-net]
+    restart: unless-stopped
+
+  kafka-2:
+    image: apache/kafka:4.1.0
+    container_name: ebd-kafka-2
+    hostname: kafka-2
+    ports:
+      - "7074:7074"
+    environment:
+      <<: *kafka-common
+      KAFKA_NODE_ID: 2
+      KAFKA_LISTENERS: INTERNAL://:29092,EXTERNAL://:7074,CONTROLLER://:19093
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka-2:29092,EXTERNAL://${HOST_IP:-127.0.0.1}:7074
+    volumes:
+      - kafka2-data:/var/lib/kafka/data
+    networks: [ebd-dev-net]
+    restart: unless-stopped
+
+  kafka-3:
+    image: apache/kafka:4.1.0
+    container_name: ebd-kafka-3
+    hostname: kafka-3
+    ports:
+      - "7076:7076"
+    environment:
+      <<: *kafka-common
+      KAFKA_NODE_ID: 3
+      KAFKA_LISTENERS: INTERNAL://:29092,EXTERNAL://:7076,CONTROLLER://:19093
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka-3:29092,EXTERNAL://${HOST_IP:-127.0.0.1}:7076
+    volumes:
+      - kafka3-data:/var/lib/kafka/data
+    networks: [ebd-dev-net]
+    restart: unless-stopped
+
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: ebd-kafka-ui
+    ports:
+      - "9094:8080"
+    environment:
+      KAFKA_CLUSTERS_0_NAME: ebd-local-kraft
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka-1:29092,kafka-2:29092,kafka-3:29092
+      DYNAMIC_CONFIG_ENABLED: "true"
+      SERVER_SERVLET_CONTEXT_PATH: /kafka
+    depends_on:
+      - kafka-1
+      - kafka-2
+      - kafka-3
+    networks: [ebd-dev-net]
+    restart: unless-stopped
+
+networks:
+  ebd-dev-net:
+    name: ebd-dev-net
+
+volumes:
+  kafka1-data:
+  kafka2-data:
+  kafka3-data:
