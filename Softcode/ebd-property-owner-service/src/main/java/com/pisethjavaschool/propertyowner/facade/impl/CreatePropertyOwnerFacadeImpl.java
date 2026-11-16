@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.pisethjavaschool.platform.security.CurrentUserReader;
+import com.pisethjavaschool.platform.security.PlatformAuditorContext;
 import com.pisethjavaschool.propertyowner.dto.CreatePropertyOwnerRequest;
 import com.pisethjavaschool.propertyowner.dto.PropertyOwnerResponse;
 import com.pisethjavaschool.propertyowner.facade.CreatePropertyOwnerFacade;
@@ -85,3 +86,4 @@ public class CreatePropertyOwnerFacadeImpl implements CreatePropertyOwnerFacade 
         return creation;
     }
 }
+

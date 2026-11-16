@@ -17,29 +17,25 @@ spring:
         jwt:
           issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:9292/realms/restaurant-ktv-platform}
           jwk-set-uri: ${KEYCLOAK_JWK_SET_URI:http://localhost:9292/realms/restaurant-ktv-platform/protocol/openid-connect/certs}
-
   cloud:
     consul:
-      host: ${CONSUL_HOST:localhost}
-      port: ${CONSUL_PORT:8600}
+      host: localhost
+      port: 8600
       discovery:
-        enabled: ${CONSUL_DISCOVERY_ENABLED:true}
+        enabled: true
         register: true
-        service-name: ${spring.application.name}
-        prefer-ip-address: true
         health-check-path: /actuator/health
         health-check-interval: 10s
 
 management:
-  consul:
-    host: localhost
-    port: 8600
-    discovery:
-      enabled: true
-      register: true
-      health-check-path: /actuator/health
-      health-check-interval: 10s
-
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true
 server:
   port: ${SERVER_PORT:8068}
 

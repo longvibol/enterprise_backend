@@ -21,6 +21,7 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/property-owners/internal")
 public class InternalPropertyOwnerController {
+	
     /*
 	private final CreatePropertyOwnerFacade createFacade;
 

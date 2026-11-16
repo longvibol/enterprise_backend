@@ -21,7 +21,7 @@ spring:
           user-service-provisioning:
             provider: provisioning-keycloak
             client-id: ${PROVISIONING_CLIENT_ID:user-service-provisioning}
-            client-secret: ${PROVISIONING_CLIENT_SECRET:qjnYuTNyHpovXdcMx6kEZgmoRZFL5Q8M}
+            client-secret: ${PROVISIONING_CLIENT_SECRET:CCgs0Y7QuvT58N6I2v6e0fHtUDNLm9ld}
             authorization-grant-type: client_credentials
         provider:
           provisioning-keycloak:
@@ -33,25 +33,32 @@ spring:
 
   cloud:
     consul:
-      host: ${CONSUL_HOST:localhost}
-      port: ${CONSUL_PORT:8600}
+      host: localhost
+      port: 8600
       discovery:
-        enabled: ${CONSUL_DISCOVERY_ENABLED:true}
+        enabled: true
         register: true
-        service-name: ${spring.application.name}
-        prefer-ip-address: true
         health-check-path: /actuator/health
         health-check-interval: 10s
 
 management:
-  consul:
-    host: localhost
-    port: 8600
-    discovery:
-      enabled: true
-      register: true
-      health-check-path: /actuator/health
-      health-check-interval: 10s
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true         
+#  cloud:
+#    consul:
+#      host: ${CONSUL_HOST:localhost}
+#      port: ${CONSUL_PORT:8500}
+#      discovery:
+#        enabled: ${CONSUL_DISCOVERY_ENABLED:false}
+#        service-name: ${spring.application.name}
+#        prefer-ip-address: true
+#        health-check-path: /actuator/health
 
 server:
   port: ${SERVER_PORT:8089}
@@ -80,16 +87,10 @@ platform:
   clients:
     access-control:
       base-url: ${ACCESS_CONTROL_SERVICE_URL:http://access-control-service}
-      root-path: /api/v1/access-control			
+      root-path: /api/v1/access-control     
     property-owner:
       base-url: ${PROPERTY_OWNER_SERVICE_URL:http://property-owner-service}
-      root-path: /api/v1/property-owners			
-
-
-  endpoint:
-    health:
-      probes:
-        enabled: true
+      root-path: /api/v1/property-owners      
 
 logging:
   level:

@@ -17,29 +17,25 @@ spring:
         jwt:
           issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:9292/realms/restaurant-ktv-platform}
           jwk-set-uri: ${KEYCLOAK_JWK_SET_URI:http://localhost:9292/realms/restaurant-ktv-platform/protocol/openid-connect/certs}
-
   cloud:
     consul:
-      host: ${CONSUL_HOST:localhost}
-      port: ${CONSUL_PORT:8600}
+      host: localhost
+      port: 8600
       discovery:
-        enabled: ${CONSUL_DISCOVERY_ENABLED:true}
+        enabled: true
         register: true
-        service-name: ${spring.application.name}
-        prefer-ip-address: true
         health-check-path: /actuator/health
         health-check-interval: 10s
 
 management:
-  consul:
-    host: localhost
-    port: 8600
-    discovery:
-      enabled: true
-      register: true
-      health-check-path: /actuator/health
-      health-check-interval: 10s
-
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true
 server:
   port: ${SERVER_PORT:8069}
 
@@ -47,15 +43,13 @@ server:
 logging:
   level:
     com.pisethjavaschool.propertyowner: INFO
-# Enable the privileged property-owner client only for the registration orchestrator
-platform.clients.property-owner.provisioning.enabled: false
-platform.clients.access-control.provisioning.enabled: false
+    org.springframework.security: DEBUG
 
 platform:
   clients:
     user:
-      base-url: ${USER_SERVICE_URL:http://localhost:8089}
-      root-path: /api/v1/users    
+      base-url: ${USER_SERVICE_URL:http://user-service}
+      root-path: /api/v1/users		
 security:
   provisioning:
     client-id: ${PROVISIONING_CLIENT_ID:user-service-provisioning}
