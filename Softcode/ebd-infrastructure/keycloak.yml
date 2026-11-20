@@ -1,0 +1,61 @@
+services:
+  keycloak-postgres:
+    image: postgres:16-alpine
+    container_name: ps-keycloak-postgres
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: keycloak
+    volumes:
+      - keycloakuserservice_pg_data:/var/lib/postgresql/data
+    networks:
+      - pisethjavaschool-dev-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U keycloak -d keycloak"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  keycloak-user-service:
+    image: quay.io/keycloak/keycloak:26.0.7
+    container_name: ps-keycloak-user-service
+    depends_on:
+      keycloak-postgres:
+        condition: service_healthy
+    ports:
+      - "9292:8080"
+      - "9191:9000"
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://keycloak-postgres:5432/keycloak
+      KC_DB_USERNAME: keycloak
+      KC_DB_PASSWORD: keycloak
+
+      KC_HEALTH_ENABLED: "true"
+      KC_METRICS_ENABLED: "true"
+
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+
+    networks:
+      - pisethjavaschool-dev-net
+
+    command:
+      - start-dev
+
+    healthcheck:
+      test: ["CMD-SHELL", "timeout 5 bash -c '</dev/tcp/localhost/9000' || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 40s
+
+    restart: unless-stopped
+
+volumes:
+  keycloakuserservice_pg_data:
+
+networks:
+  pisethjavaschool-dev-net:
+    external: true

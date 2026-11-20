@@ -2,7 +2,7 @@ package com.pisethjavaschool.property.service.impl;
 
 import org.springframework.stereotype.Service;
 
-import com.pisethjavaschool.platform.propertyowner.client.PropertyOwnerClient;
+import com.pisethjavaschool.platform.propertyowner.client.PropertyOwnerQueryClient;
 import com.pisethjavaschool.platform.propertyowner.client.dto.PropertyOwnerSummary;
 import com.pisethjavaschool.platform.security.CurrentUserReader;
 import com.pisethjavaschool.property.exception.PropertyAccessDeniedException;
@@ -17,7 +17,7 @@ public class CurrentPropertyOwnerResolverImpl implements CurrentPropertyOwnerRes
     private static final String VERIFIED = "VERIFIED";
 
     private final CurrentUserReader currentUserReader;
-    private final PropertyOwnerClient propertyOwnerClient;
+    private final PropertyOwnerQueryClient propertyOwnerClient;
 
     @Override
     public Mono<PropertyOwnerSummary> resolveVerifiedActiveOwner() {

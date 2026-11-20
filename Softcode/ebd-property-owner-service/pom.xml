@@ -133,12 +133,6 @@
             <version>${platform-libraries.version}</version>
         </dependency>
         
-        <dependency>
-            <groupId>com.pisethjavaschool.platform</groupId>
-            <artifactId>platform-user-client</artifactId>
-            <version>${platform-libraries.version}</version>
-        </dependency>
-
         <!-- Mapping -->
         <dependency>
             <groupId>org.mapstruct</groupId>
@@ -178,6 +172,14 @@
             <artifactId>reactor-test</artifactId>
             <scope>test</scope>
         </dependency>
+       <dependency>
+		    <groupId>org.springframework.cloud</groupId>
+		    <artifactId>spring-cloud-starter-consul-discovery</artifactId>
+		</dependency>  
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>      
 
     </dependencies>
 

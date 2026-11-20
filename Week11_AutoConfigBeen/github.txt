@@ -1,0 +1,1 @@
+https://github.com/pisething/ebd-property-owner-service/tree/week_11_autoconfig_bean

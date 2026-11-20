@@ -11,6 +11,7 @@ import com.pisethjavaschool.property.entity.Property;
 import com.pisethjavaschool.property.enums.PropertyStatus;
 import com.pisethjavaschool.property.exception.InvalidPropertyStatusException;
 import com.pisethjavaschool.property.facade.ChangePropertyStatusFacade;
+import com.pisethjavaschool.property.service.PropertyOwnershipPolicy;
 import com.pisethjavaschool.property.service.PropertyReader;
 import com.pisethjavaschool.property.service.PropertyWriter;
 
@@ -24,11 +25,12 @@ public class ChangePropertyStatusFacadeImpl
 
     private final PropertyReader reader;
     private final PropertyWriter writer;
+    private final PropertyOwnershipPolicy ownershipPolicy;
 
     @Override
     @Transactional
     public Mono<Void> submit(UUID id) {
-        return execute(
+        return executeOwner(
                 id,
                 property -> change(
                         property,
@@ -41,7 +43,7 @@ public class ChangePropertyStatusFacadeImpl
     @Override
     @Transactional
     public Mono<Void> activate(UUID id) {
-        return execute(id, property -> {
+        return executeOwner(id, property -> {
             property.setActive(true);
             return writer.save(property).then();
         });
@@ -50,7 +52,7 @@ public class ChangePropertyStatusFacadeImpl
     @Override
     @Transactional
     public Mono<Void> deactivate(UUID id) {
-        return execute(id, property -> {
+        return executeOwner(id, property -> {
             property.setActive(false);
             return writer.save(property).then();
         });
@@ -118,5 +120,10 @@ public class ChangePropertyStatusFacadeImpl
         property.setRejectionReason(reason);
 
         return writer.save(property).then();
+    }
+    
+    private Mono<Void> executeOwner(UUID id, Function<Property, Mono<Void>> operation) {
+        return reader.getById(id)
+                .flatMap(property -> ownershipPolicy.verifyOwner(property).then(operation.apply(property)));
     }
 }

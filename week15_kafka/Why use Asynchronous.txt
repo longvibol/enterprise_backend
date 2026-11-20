@@ -1,0 +1,16 @@
+- if we use synchronous : make the data inconsistence when we call from one service to another service 
+
+==> we use message broker: kafka ដើម្បីដោយស្រាយបញ្ហា inconsistence នឹង
+
+1- Create kaftka from dockor 
+
+from the recomment we use three instance of kafka :   kafka-1,2,3 ហើយវាខុសគ្នាតែ Port ទេ
+
+then we have ui to look at it :"  kafka-ui: " 
+
+- យើងប្រើប្រាស់ series new : they don't no use zoone keeper : kras mood 
+- 
+
+
+
+

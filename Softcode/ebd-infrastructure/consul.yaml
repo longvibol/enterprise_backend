@@ -1,0 +1,25 @@
+name: ebd-infrastructure
+
+services:
+  ebd-consul:
+    image: hashicorp/consul:1.20
+    container_name: ebd-consul
+    command:
+      - agent
+      - -dev
+      - -client=0.0.0.0
+      - -ui
+    ports:
+      - "127.0.0.1:8600:8500"
+    networks:
+      - ebd-network
+    healthcheck:
+      test: ["CMD", "consul", "members"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+
+networks:
+  ebd-network:
+    driver: bridge

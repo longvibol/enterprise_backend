@@ -2,14 +2,10 @@ package com.pisethjavaschool.platform.security.audit;
 
 import java.util.UUID;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.ReactiveSecurityContextHolder;
-
 import com.pisethjavaschool.platform.common.audit.CurrentAuditorProvider;
+import com.pisethjavaschool.platform.security.CurrentUserSupport;
 import com.pisethjavaschool.platform.security.PlatformAuditorContext;
-import com.pisethjavaschool.platform.security.PlatformUserIdResolver;
 
-import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Mono;
 /*
 @Component
@@ -28,7 +24,7 @@ public class SecurityCurrentAuditorProvider
     }
 }
 */
-
+/*
 @RequiredArgsConstructor
 public class SecurityCurrentAuditorProvider implements CurrentAuditorProvider {
 
@@ -51,3 +47,19 @@ public class SecurityCurrentAuditorProvider implements CurrentAuditorProvider {
         });
     }
 }
+*/
+/** Uses an explicit auditor for background work; HTTP requests require platform_user_id. */
+public class SecurityCurrentAuditorProvider implements CurrentAuditorProvider {
+    @Override
+    public Mono<UUID> getCurrentAuditorId() {
+        return Mono.deferContextual(context -> {
+            if (context.hasKey(PlatformAuditorContext.AUDITOR_ID_CONTEXT_KEY)) {
+                return Mono.just(context.<UUID>get(PlatformAuditorContext.AUDITOR_ID_CONTEXT_KEY));
+            }
+            return CurrentUserSupport.currentPlatformUserId();
+        });
+    }
+}
+
+
+

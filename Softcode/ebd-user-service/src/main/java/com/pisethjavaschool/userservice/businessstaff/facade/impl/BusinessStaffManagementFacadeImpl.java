@@ -3,7 +3,7 @@ package com.pisethjavaschool.userservice.businessstaff.facade.impl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.pisethjavaschool.platform.accesscontrol.client.AccessControlClient;
+import com.pisethjavaschool.platform.accesscontrol.client.AccessControlProvisioningClient;
 import com.pisethjavaschool.platform.accesscontrol.client.enums.AccessRoleCode;
 import com.pisethjavaschool.userservice.businessstaff.dto.CreateBusinessStaffRequest;
 import com.pisethjavaschool.userservice.businessstaff.entity.BusinessStaffProfile;
@@ -21,7 +21,7 @@ import reactor.core.publisher.Mono;
 public class BusinessStaffManagementFacadeImpl implements BusinessStaffManagementFacade {
     private final UserCommandService userCommandService;
     private final BusinessStaffProfileRepository businessStaffProfileRepository;
-    private final AccessControlClient accessControlClient;
+    private final AccessControlProvisioningClient accessControlClient;
     private final BusinessStaffMapper mapper;
 
     @Override

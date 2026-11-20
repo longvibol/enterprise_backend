@@ -17,24 +17,38 @@ spring:
         jwt:
           issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:9292/realms/restaurant-ktv-platform}
           jwk-set-uri: ${KEYCLOAK_JWK_SET_URI:http://localhost:9292/realms/restaurant-ktv-platform/protocol/openid-connect/certs}
-
-server:
-  port: ${SERVER_PORT:8068}
+  cloud:
+    consul:
+      host: localhost
+      port: 8600
+      discovery:
+        enabled: true
+        register: true
+        health-check-path: /actuator/health
+        health-check-interval: 10s
 
 management:
   endpoints:
     web:
       exposure:
-        include: health,info,prometheus
+        include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true
+server:
+  port: ${SERVER_PORT:8068}
+
 
 logging:
   level:
     com.pisethjavaschool.property: INFO
+# Enable the privileged property-owner client only for the registration orchestrator.
+platform.clients.property-owner.provisioning.enabled: false
+platform.clients.access-control.provisioning.enabled: false
 
 platform:
   clients:
-    user:
-      base-url: ${USER_SERVICE_URL:http://localhost:8089}
     property-owner:
       base-url: ${PROPERTY_OWNER_SERVICE_URL:http://localhost:8069}
     access-control:

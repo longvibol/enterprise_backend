@@ -2,9 +2,9 @@ package com.pisethjavaschool.userservice.businessowner.facade.impl;
 
 import org.springframework.stereotype.Service;
 
-import com.pisethjavaschool.platform.accesscontrol.client.AccessControlClient;
+import com.pisethjavaschool.platform.accesscontrol.client.AccessControlProvisioningClient;
 import com.pisethjavaschool.platform.accesscontrol.client.enums.AccessRoleCode;
-import com.pisethjavaschool.platform.propertyowner.client.PropertyOwnerClient;
+import com.pisethjavaschool.platform.propertyowner.client.PropertyOwnerProvisioningClient;
 import com.pisethjavaschool.platform.propertyowner.client.dto.CreatePropertyOwnerCommand;
 import com.pisethjavaschool.platform.propertyowner.client.dto.OwnerType;
 import com.pisethjavaschool.userservice.businessowner.dto.BusinessOwnerRegistrationRequest;
@@ -24,8 +24,8 @@ public class BusinessOwnerRegistrationFacadeImpl implements BusinessOwnerRegistr
 	
 	private final UserCommandService userCommandService;
     private final BusinessOwnerRegistrationMapper mapper;
-    private final PropertyOwnerClient propertyOwnerClient;
-    private final AccessControlClient accessControlClient;
+    private final PropertyOwnerProvisioningClient propertyOwnerClient;
+    private final AccessControlProvisioningClient accessControlClient;
 
     @Override
     public Mono<UserResponse> registerBusinessOwner(BusinessOwnerRegistrationRequest request) {

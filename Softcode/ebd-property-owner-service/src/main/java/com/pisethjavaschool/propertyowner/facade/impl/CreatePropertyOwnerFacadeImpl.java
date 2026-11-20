@@ -18,35 +18,12 @@ import com.pisethjavaschool.propertyowner.service.PropertyOwnerWriter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
-
+/*
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class CreatePropertyOwnerFacadeImpl implements CreatePropertyOwnerFacade {
-    /*
-	private final CurrentUserReader currentUserReader;
-    private final PropertyOwnerValidator validator;
-    private final PropertyOwnerFactory factory;
-    private final PropertyOwnerWriter writer;
-    private final PropertyOwnerMapper mapper;
-
-    @Override
-    @Transactional
-    public Mono<PropertyOwnerResponse> create(CreatePropertyOwnerRequest request) {
-        return currentUserReader.getCurrentUserId()
-                .flatMap(userId -> validator.validateUserHasNoOwner(userId).thenReturn(userId))
-                .map(userId -> factory.createDraft(userId, request))
-                .flatMap(writer::save)
-                .doOnNext(owner -> log.info("Business owner created: ownerId={}, userId={}", owner.getId(), owner.getUserId()))
-                .map(mapper::toResponse);
-    }
-
-	@Override
-	public Mono<PropertyOwnerResponse> createForUser(UUID userId, CreatePropertyOwnerRequest request) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	*/
+   
 	
 	private final CurrentUserReader currentUserReader;
     private final PropertyOwnerValidator validator;
@@ -74,3 +51,39 @@ public class CreatePropertyOwnerFacadeImpl implements CreatePropertyOwnerFacade 
         return PlatformAuditorContext.withAuditorId(creation, userId);
     }
 }
+
+*/
+
+@Slf4j
+@Component
+@RequiredArgsConstructor
+public class CreatePropertyOwnerFacadeImpl implements CreatePropertyOwnerFacade {
+
+	
+	private final CurrentUserReader currentUserReader;
+    private final PropertyOwnerValidator validator;
+    private final PropertyOwnerFactory factory;
+    private final PropertyOwnerWriter writer;
+    private final PropertyOwnerMapper mapper;
+
+    @Override
+    @Transactional
+    public Mono<PropertyOwnerResponse> create(CreatePropertyOwnerRequest request) {
+        return currentUserReader.getCurrentUserId()
+                .flatMap(userId -> createForUser(userId, request));
+    }
+
+    @Override
+    @Transactional
+    public Mono<PropertyOwnerResponse> createForUser(UUID userId, CreatePropertyOwnerRequest request) {
+        Mono<PropertyOwnerResponse> creation = validator.validateUserHasNoOwner(userId)
+                .thenReturn(userId)
+                .map(id -> factory.createDraft(id, request))
+                .flatMap(writer::save)
+                .doOnNext(owner -> log.info("Business owner created: ownerId={}, userId={}", owner.getId(), owner.getUserId()))
+                .map(mapper::toResponse);
+
+        return creation;
+    }
+}
+
