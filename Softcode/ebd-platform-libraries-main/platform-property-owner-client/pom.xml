@@ -31,9 +31,7 @@
             <artifactId>platform-security</artifactId>
             <version>${project.version}</version>
         </dependency>
-        
-        <!-- Consul -->
-		<dependency>
+        <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-loadbalancer</artifactId>
         </dependency>
